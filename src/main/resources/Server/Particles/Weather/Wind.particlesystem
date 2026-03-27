@@ -1,0 +1,21 @@
+{
+  "Spawners": [
+    {
+      "SpawnerId": "Wind_Smoke",
+      "PositionOffset": {
+        "Z": 0,
+        "X": 0,
+        "Y": 1
+      },
+      "RotationOffset": {
+        "Pitch": 270
+      },
+      "FixedRotation": false
+    },
+    {
+      "SpawnerId": "Dust_Sparkles_Fine"
+    }
+  ],
+  "CullDistance": 30.0,
+  "IsImportant": false
+}

@@ -1,0 +1,55 @@
+{
+  "TranslationProperties": {
+    "Name": "items.new_block.name",
+    "Description": "items.new_block.description"
+  },
+  "Id": "New_Block",
+  "MaxStack": 100,
+  "Icon": "Icons/ItemsGenerated/New_Block.png",
+  "Categories": [
+    "Blocks.Rocks"
+  ],
+  "PlayerAnimationsId": "Block",
+  "Set": "Rock_Stone",
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Cube",
+    "Group": "Stone",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks",
+        "ItemId": "New_Block"
+      }
+    },
+    "BlockEntity": {
+      "Components": {
+        "Standing_Rune_Breeze": {}
+      }
+    },
+    "BlockParticleSetId": "Stone",
+    "Textures": [
+      {
+        "All": "BlockTextures/New_Block.png"
+      }
+    ],
+    "ParticleColor": "#aeae8c",
+    "BlockSoundSetId": "Stone",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "VariantRotation": "UpDownNESW",
+    "Interactions": {
+      "CollisionEnter": {
+        "Interactions": [
+          {
+            "Type": "my_custom_interaction_id"
+          }
+        ]
+      }
+    }
+  },
+  "ResourceTypes": [
+    {
+      "Id": "Rock"
+    }
+  ]
+}

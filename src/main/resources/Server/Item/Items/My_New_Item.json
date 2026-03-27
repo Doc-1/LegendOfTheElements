@@ -1,0 +1,57 @@
+{
+  "TranslationProperties": {
+    "Name": "My New Item",
+    "Description": "My New Item Description"
+  },
+  "Id": "My_New_Item",
+  "Model": "Items/Weapons/Sword/Iron.blockymodel",
+  "Texture": "Items/Weapons/Sword/Iron_Texture.png",
+  "Icon": "Icons/ItemsGenerated/Weapon_Sword_Iron.png",
+  "Quality": "Common",
+  "MaxStack": 1,
+  "Categories": [
+    "Items.Example"
+  ],
+  "Utility": {
+    "Usable": true
+  },
+  "Interactions": {
+    "Secondary": {
+      "Interactions": [
+        {
+          "Type": "my_custom_interaction_id"
+        }
+      ]
+    },
+    "Ability2": {
+      "Interactions": [
+        {
+          "Type": "my_custom_interaction_id"
+        }
+      ]
+    },
+    "Ability3": {
+      "Interactions": [
+        {
+          "Type": "my_custom_interaction_id"
+        }
+      ]
+    }
+  },
+  "InteractionConfig": {
+    "Priority": {
+      "Secondary": {
+        "MainHand": 15,
+        "OffHand": 15
+      },
+      "Ability2": {
+        "MainHand": 15,
+        "OffHand": 15
+      },
+      "Ability3": {
+        "MainHand": 15,
+        "OffHand": 15
+      }
+    }
+  }
+}

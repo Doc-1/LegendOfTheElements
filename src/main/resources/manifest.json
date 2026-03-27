@@ -1,0 +1,24 @@
+{
+    "Group": "Docvin",
+    "Name": "LegendOfTheElementsPlugin",
+    "Version": "0.0.2",
+    "Description": "An example plugin for HyTale!",
+    "Authors": [
+        {
+            "Name": "Docvin"
+        }
+    ],
+    "Website": "example.org",
+    "ServerVersion": "2026.02.19-*",
+    "Dependencies": {
+        "Hytale:EntityModule": "*",
+        "Hytale:BlockModule": "*",
+        "Hytale:InteractionModule": "*"
+    },
+    "OptionalDependencies": {
+        
+    },
+    "DisabledByDefault": false,
+    "Main": "dev.docvin.legendofelements.LegendOfTheElementsPlugin",
+    "IncludesAssetPack": true
+}

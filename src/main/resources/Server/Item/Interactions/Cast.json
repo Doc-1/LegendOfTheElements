@@ -1,0 +1,11 @@
+{
+  "Type": "Chaining",
+  "Next": [
+    {
+      "Type": "my_custom_interaction_id",
+      "Next": {
+        "Type": "BreakBlock"
+      }
+    }
+  ]
+}
