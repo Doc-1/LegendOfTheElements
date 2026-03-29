@@ -28,8 +28,28 @@ import javax.annotation.Nullable;
 
 public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
 
-    private static final Query<ChunkStore> QUERY = Query.and(BlockSection.getComponentType(), ChunkSection.getComponentType());
+    private static final Query<ChunkStore> BLOCK_QUERY = Query.and(StandingRuneBreezeComponent.getComponentType());
+    private static final Query<ChunkStore> CHUNK_QUERY = Query.and(BlockSection.getComponentType(), ChunkSection.getComponentType());
     private static final Query<EntityStore> ENTITY_STORE_QUERY = Query.and(TransformComponent.getComponentType(), Velocity.getComponentType(), BoundingBox.getComponentType());
+
+    private void tick(float dt, int index, @Nonnull Ref<EntityStore> refEntity, @Nonnull CommandBuffer<EntityStore> commandBufferEntity, @Nonnull Ref<ChunkStore> blockRef, @Nonnull CommandBuffer<ChunkStore> commandBufferChunk) {
+        StandingRuneBreezeComponent standingRuneBreezeComponent = commandBufferChunk.getComponent(blockRef, StandingRuneBreezeComponent.getComponentType());
+        assert standingRuneBreezeComponent != null;
+
+        Box area = standingRuneBreezeComponent.getCollisionArea();
+
+        TransformComponent transformComponent = commandBufferEntity.getComponent(refEntity, TransformComponent.getComponentType());
+        assert transformComponent != null;
+
+        Vector3d point = transformComponent.getPosition();
+        if (area.containsPosition(point)) {
+            Velocity velocity = commandBufferEntity.getComponent(refEntity, Velocity.getComponentType());
+            assert velocity != null;
+            velocity.addInstruction(standingRuneBreezeComponent.getVelocity(), null, ChangeVelocityType.Add);
+
+        }
+
+    }
 
     @Override
     public void tick(float dt, int index, @Nonnull ArchetypeChunk<ChunkStore> archetypeChunk, @Nonnull Store<ChunkStore> storeChunk, @Nonnull CommandBuffer<ChunkStore> commandBufferChunk) {
@@ -40,60 +60,55 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
             ChunkSection section = archetypeChunk.getComponent(index, ChunkSection.getComponentType());
             assert section != null;
 
-            BlockComponentChunk blockComponentChunk = commandBufferChunk.getComponent(section.getChunkColumnReference(), BlockComponentChunk.getComponentType());
-            assert blockComponentChunk != null;
             WorldChunk worldChunk = commandBufferChunk.getComponent(section.getChunkColumnReference(), WorldChunk.getComponentType());
             assert worldChunk != null;
             assert worldChunk.getEntityChunk() != null;
 
             World world = worldChunk.getWorld();
 
+            BlockComponentChunk blockComponentChunk = commandBufferChunk.getComponent(section.getChunkColumnReference(), BlockComponentChunk.getComponentType());
+            assert blockComponentChunk != null;
+
             blocks.forEachTicking(blockComponentChunk, commandBufferChunk, section.getY(), (blockComponentChunk1, commandBuffer1, localX, localY, localZ, blockId) -> {
                 Ref<ChunkStore> blockRef = blockComponentChunk.getEntityReference(ChunkUtil.indexBlockInColumn(localX, localY, localZ));
-
-                if (blockRef == null) {
+                if (blockRef == null)
                     return BlockTickStrategy.IGNORED;
-                } else {
-                    StandingRuneBreezeComponent standingRuneBreezeComponent = commandBuffer1.getComponent(blockRef, StandingRuneBreezeComponent.getComponentType());
-                    if (standingRuneBreezeComponent != null) {
+                else if (!BLOCK_QUERY.test(commandBuffer1.getArchetype(blockRef)))
+                    return BlockTickStrategy.IGNORED;
+                else {
+                    Store<EntityStore> store = world.getEntityStore().getStore();
 
-                        Store<EntityStore> store = world.getEntityStore().getStore();
-                        int globalX = localX + (worldChunk.getX() * 32);
-                        int globalZ = localZ + (worldChunk.getZ() * 32);
+                    store.forEachChunk(ENTITY_STORE_QUERY, (chunk, buffer) -> {
+                        for (int i = 0; i < chunk.size(); i++)
+                            this.tick(dt, i, chunk.getReferenceTo(i), buffer, blockRef, commandBuffer1);
+                    });
 
-                        float modifier = standingRuneBreezeComponent.getModifier();
-
-                        Vector3d vel = standingRuneBreezeComponent.getVelocity().scale(modifier);
-                        Box area = standingRuneBreezeComponent.getCollisionArea();
-
-                        store.forEachChunk(ENTITY_STORE_QUERY, (chunk, buffer) -> {
-                            for (int i = 0; i < chunk.size(); i++) {
-                                Ref<EntityStore> ref = chunk.getReferenceTo(i);
-                                TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());
-                                assert transformComponent != null;
-                                Vector3d pos = transformComponent.getPosition();
-                                if (pos.distanceSquaredTo(new Vector3d(globalX, localY, globalZ)) <= 25) {
-                                    BoundingBox boundingBox = store.getComponent(ref, BoundingBox.getComponentType());
-                                    assert boundingBox != null;
-                                    Box box = boundingBox.getBoundingBox().clone();
-
-                                    box.min.add(pos);
-                                    box.max.add(pos);
-                                    if (box.isIntersecting(area)) {
-                                        buffer.run(store1 -> {
-                                            Velocity velocity = store1.getComponent(ref, Velocity.getComponentType());
-                                            assert velocity != null;
-                                            velocity.addInstruction(vel, null, ChangeVelocityType.Add);
-                                        });
-                                    }
-                                }
-                            }
-                        });
-                        return BlockTickStrategy.CONTINUE;
-                    } else {
-                        return BlockTickStrategy.IGNORED;
-                    }
+//                        store.forEachChunk(ENTITY_STORE_QUERY, (chunk, buffer) -> {
+//                            for (int i = 0; i < chunk.size(); i++) {
+//                                Ref<EntityStore> ref = chunk.getReferenceTo(i);
+//                                TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());
+//                                assert transformComponent != null;
+//                                Vector3d pos = transformComponent.getPosition();
+//                                if (pos.distanceSquaredTo(new Vector3d(globalX, localY, globalZ)) <= 25) {
+//                                    BoundingBox boundingBox = store.getComponent(ref, BoundingBox.getComponentType());
+//                                    assert boundingBox != null;
+//                                    Box box = boundingBox.getBoundingBox().clone();
+//
+//                                    box.min.add(pos);
+//                                    box.max.add(pos);
+//                                    if (box.isIntersecting(area)) {
+//                                        buffer.run(store1 -> {
+//                                            Velocity velocity = store1.getComponent(ref, Velocity.getComponentType());
+//                                            assert velocity != null;
+//                                            velocity.addInstruction(vel, null, ChangeVelocityType.Add);
+//                                        });
+//                                    }
+//                                }
+//                            }
+//                        });
+                    return BlockTickStrategy.CONTINUE;
                 }
+
             });
         }
     }
@@ -101,6 +116,6 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
     @Nullable
     @Override
     public Query<ChunkStore> getQuery() {
-        return QUERY;
+        return CHUNK_QUERY;
     }
 }
