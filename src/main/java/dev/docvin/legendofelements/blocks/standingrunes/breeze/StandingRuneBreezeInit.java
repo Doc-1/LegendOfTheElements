@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.standingrunes.systems.ref;
+package dev.docvin.legendofelements.blocks.standingrunes.breeze;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
@@ -10,11 +10,13 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.RotationTuple;
 import com.hypixel.hytale.server.core.modules.block.BlockModule;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import dev.docvin.legendofelements.blocks.standingrunes.components.StandingRuneBreezeComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * This handles how the entity should be added and removed from the compliant block.
+ */
 public class StandingRuneBreezeInit extends RefSystem<ChunkStore> {
 
     private static final Query<ChunkStore> QUERY = Query.and(BlockModule.BlockStateInfo.getComponentType(), StandingRuneBreezeComponent.getComponentType());
@@ -43,6 +45,7 @@ public class StandingRuneBreezeInit extends RefSystem<ChunkStore> {
         Box area = Box.cube(min, 1);
         Vector3d distance = velocity.clone().normalize().scale(5);
 
+        //Right now only handles cardinal directions
         switch (rotationIndex) {
             case 0, 1 -> area.max.subtract(distance);
             case 2, 3 -> area.min.subtract(distance);

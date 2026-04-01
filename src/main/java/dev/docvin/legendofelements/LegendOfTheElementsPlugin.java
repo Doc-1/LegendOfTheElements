@@ -1,8 +1,10 @@
 package dev.docvin.legendofelements;
 
+import com.hypixel.hytale.assetstore.event.LoadedAssetsEvent;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
 import com.hypixel.hytale.server.core.io.adapter.PacketFilter;
+import com.hypixel.hytale.server.core.modules.entitystats.asset.EntityStatType;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import dev.docvin.legendofelements.packets.filter.UsageKeysPressed;
@@ -41,7 +43,12 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
         AllComponents.register();
         AllSystems.register();
         getCommandRegistry().registerCommand(new ExampleCommand("", ""));
+        getEventRegistry().register(LoadedAssetsEvent.class, EntityStatType.class, this::onStatsLoaded);
 
+    }
+
+    private void onStatsLoaded(LoadedAssetsEvent event) {
+        System.out.println(EntityStatType.getAssetMap().getIndex("hytale:movement_speed"));
     }
 
     @Override

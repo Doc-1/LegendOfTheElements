@@ -3,7 +3,7 @@ package dev.docvin.legendofelements.registry;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.docvin.legendofelements.blocks.standingrunes.components.StandingRuneBreezeComponent;
+import dev.docvin.legendofelements.blocks.standingrunes.breeze.StandingRuneBreezeComponent;
 import dev.docvin.legendofelements.entity.velocity.components.AccelerateComponent;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaComponent;

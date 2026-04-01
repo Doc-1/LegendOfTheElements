@@ -1,7 +1,7 @@
 package dev.docvin.legendofelements.registry;
 
-import dev.docvin.legendofelements.blocks.standingrunes.systems.StandingRuneBreezeSystem;
-import dev.docvin.legendofelements.blocks.standingrunes.systems.ref.StandingRuneBreezeInit;
+import dev.docvin.legendofelements.blocks.standingrunes.breeze.StandingRuneBreezeInit;
+import dev.docvin.legendofelements.blocks.standingrunes.breeze.StandingRuneBreezeSystem;
 import dev.docvin.legendofelements.entity.velocity.systems.AccelerateSystem;
 import dev.docvin.legendofelements.rune.systems.RuneManaRegenSystem;
 import dev.docvin.legendofelements.rune.systems.RuneSpellCastingSystem;

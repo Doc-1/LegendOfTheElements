@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.standingrunes.components;
+package dev.docvin.legendofelements.blocks.standingrunes.breeze;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;

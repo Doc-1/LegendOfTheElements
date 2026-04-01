@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.standingrunes.systems;
+package dev.docvin.legendofelements.blocks.standingrunes.breeze;
 
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -10,7 +10,11 @@ import com.hypixel.hytale.math.shape.Box;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.protocol.ChangeVelocityType;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
+import com.hypixel.hytale.server.core.entity.effect.EffectControllerComponent;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.entity.entities.player.movement.MovementConfig;
 import com.hypixel.hytale.server.core.modules.entity.component.BoundingBox;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.physics.component.Velocity;
@@ -21,17 +25,31 @@ import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.ChunkSection;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.docvin.legendofelements.blocks.standingrunes.components.StandingRuneBreezeComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
 
+    static final double TOLERANCE = 8.8e-3;
     private static final Query<ChunkStore> BLOCK_QUERY = Query.and(StandingRuneBreezeComponent.getComponentType());
     private static final Query<ChunkStore> CHUNK_QUERY = Query.and(BlockSection.getComponentType(), ChunkSection.getComponentType());
     private static final Query<EntityStore> ENTITY_STORE_QUERY = Query.and(TransformComponent.getComponentType(), Velocity.getComponentType(), BoundingBox.getComponentType());
+    private double xSpeed = 0;
+    private double ySpeed = 0;
+    private double zSpeed = 0;
 
+
+    /**
+     * This tick method runs for each entity in the collision area stored in {@link StandingRuneBreezeComponent} of the current block ticking block.
+     *
+     * @param dt                  delta, the time in between frames
+     * @param index               the index of the current entity
+     * @param refEntity           memory address of the current entity
+     * @param commandBufferEntity ComponentAccessor for EntityStore
+     * @param blockRef            memory address of the current ticking block
+     * @param commandBufferChunk  ComponentAccessor for ChunkStore
+     */
     private void tick(float dt, int index, @Nonnull Ref<EntityStore> refEntity, @Nonnull CommandBuffer<EntityStore> commandBufferEntity, @Nonnull Ref<ChunkStore> blockRef, @Nonnull CommandBuffer<ChunkStore> commandBufferChunk) {
         StandingRuneBreezeComponent standingRuneBreezeComponent = commandBufferChunk.getComponent(blockRef, StandingRuneBreezeComponent.getComponentType());
         assert standingRuneBreezeComponent != null;
@@ -45,10 +63,46 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
         if (area.containsPosition(point)) {
             Velocity velocity = commandBufferEntity.getComponent(refEntity, Velocity.getComponentType());
             assert velocity != null;
-            velocity.addInstruction(standingRuneBreezeComponent.getVelocity(), null, ChangeVelocityType.Add);
 
+            Vector3d speed = standingRuneBreezeComponent.getVelocity().clone().scale(standingRuneBreezeComponent.getModifier());
+
+            double x = (speed.x - velocity.getClientVelocity().x);
+
+            double y = (speed.y - velocity.getVelocity().y);
+            double z = (speed.z - velocity.getVelocity().z);
+
+            Player player = commandBufferEntity.getComponent(refEntity, Player.getComponentType());
+
+            EffectControllerComponent controllerComponent = commandBufferEntity.getComponent(refEntity, EffectControllerComponent.getComponentType());
+
+
+            if (player != null && controllerComponent != null) {
+                assert player.getWorld() != null;
+                String movementConfigIndex = player.getWorld().getGameplayConfig().getPlayerConfig().getMovementConfigId();
+                MovementConfig movementConfig = MovementConfig.getAssetMap().getAsset(movementConfigIndex);
+                assert movementConfig != null;
+                float base = movementConfig.getBaseSpeed();
+
+                xSpeed = controlSpeed(xSpeed, standingRuneBreezeComponent.getModifier(), dt);
+                ySpeed = controlSpeed(ySpeed, standingRuneBreezeComponent.getModifier(), dt);
+                zSpeed = controlSpeed(zSpeed, standingRuneBreezeComponent.getModifier(), dt);
+
+                Vector3d s = new Vector3d(xSpeed, 0, 0);
+                velocity.addInstruction(s, null, ChangeVelocityType.Add);
+                player.sendMessage(Message.raw("x " + x + " " + xSpeed));
+            }
         }
+    }
 
+    private double controlSpeed(double speed, float mod, float dt) {
+        if (speed > 0 && speed < mod) {
+            speed += 5 * dt;
+        } else {
+            speed -= 4 * dt;
+            if (speed <= 0)
+                speed = 0;
+        }
+        return speed;
     }
 
     @Override
