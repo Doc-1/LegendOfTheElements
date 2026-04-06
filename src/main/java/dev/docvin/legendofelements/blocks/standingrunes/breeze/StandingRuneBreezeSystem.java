@@ -14,7 +14,6 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
 import com.hypixel.hytale.server.core.entity.effect.EffectControllerComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.entities.player.movement.MovementConfig;
 import com.hypixel.hytale.server.core.modules.entity.component.BoundingBox;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.physics.component.Velocity;
@@ -67,9 +66,8 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
             Vector3d speed = standingRuneBreezeComponent.getVelocity().clone().scale(standingRuneBreezeComponent.getModifier());
 
             double x = (speed.x - velocity.getClientVelocity().x);
-
-            double y = (speed.y - velocity.getVelocity().y);
-            double z = (speed.z - velocity.getVelocity().z);
+            double y = (speed.y - velocity.getClientVelocity().y);
+            double z = (speed.z - velocity.getClientVelocity().z);
 
             Player player = commandBufferEntity.getComponent(refEntity, Player.getComponentType());
 
@@ -78,16 +76,12 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
 
             if (player != null && controllerComponent != null) {
                 assert player.getWorld() != null;
-                String movementConfigIndex = player.getWorld().getGameplayConfig().getPlayerConfig().getMovementConfigId();
-                MovementConfig movementConfig = MovementConfig.getAssetMap().getAsset(movementConfigIndex);
-                assert movementConfig != null;
-                float base = movementConfig.getBaseSpeed();
 
                 xSpeed = controlSpeed(xSpeed, standingRuneBreezeComponent.getModifier(), dt);
                 ySpeed = controlSpeed(ySpeed, standingRuneBreezeComponent.getModifier(), dt);
                 zSpeed = controlSpeed(zSpeed, standingRuneBreezeComponent.getModifier(), dt);
 
-                Vector3d s = new Vector3d(xSpeed, 0, 0);
+                Vector3d s = new Vector3d(xSpeed, ySpeed, zSpeed);
                 velocity.addInstruction(s, null, ChangeVelocityType.Add);
                 player.sendMessage(Message.raw("x " + x + " " + xSpeed));
             }
