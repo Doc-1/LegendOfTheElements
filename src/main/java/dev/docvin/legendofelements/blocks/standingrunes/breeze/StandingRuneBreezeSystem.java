@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 
 public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
 
-    static final double TOLERANCE = 8.8e-3;
     private static final Query<ChunkStore> BLOCK_QUERY = Query.and(StandingRuneBreezeComponent.getComponentType());
     private static final Query<ChunkStore> CHUNK_QUERY = Query.and(BlockSection.getComponentType(), ChunkSection.getComponentType());
     private static final Query<EntityStore> ENTITY_STORE_QUERY = Query.and(TransformComponent.getComponentType(), Velocity.getComponentType(), BoundingBox.getComponentType());
@@ -77,19 +76,19 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
             if (player != null && controllerComponent != null) {
                 assert player.getWorld() != null;
 
-                xSpeed = controlSpeed(xSpeed, standingRuneBreezeComponent.getModifier(), dt);
-                ySpeed = controlSpeed(ySpeed, standingRuneBreezeComponent.getModifier(), dt);
-                zSpeed = controlSpeed(zSpeed, standingRuneBreezeComponent.getModifier(), dt);
+                xSpeed = controlSpeed(xSpeed, (float) speed.x, dt);
+                ySpeed = controlSpeed(ySpeed, (float) speed.y, dt);
+                zSpeed = controlSpeed(zSpeed, (float) speed.z, dt);
 
                 Vector3d s = new Vector3d(xSpeed, ySpeed, zSpeed);
                 velocity.addInstruction(s, null, ChangeVelocityType.Add);
-                player.sendMessage(Message.raw("x " + x + " " + xSpeed));
+                player.sendMessage(Message.raw("x " + speed + " " + xSpeed));
             }
         }
     }
 
     private double controlSpeed(double speed, float mod, float dt) {
-        if (speed > 0 && speed < mod) {
+        if (speed >= 0 && speed < mod) {
             speed += 5 * dt;
         } else {
             speed -= 4 * dt;
