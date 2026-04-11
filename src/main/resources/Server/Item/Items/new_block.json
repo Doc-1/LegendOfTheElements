@@ -24,7 +24,7 @@
     },
     "BlockEntity": {
       "Components": {
-        "Standing_Rune_Breeze": {}
+        "Block_Animation": {}
       }
     },
     "BlockParticleSetId": "Stone",
@@ -42,6 +42,13 @@
         "Interactions": [
           {
             "Type": "my_custom_interaction_id"
+          }
+        ]
+      },
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "PlaceBlock"
           }
         ]
       }
