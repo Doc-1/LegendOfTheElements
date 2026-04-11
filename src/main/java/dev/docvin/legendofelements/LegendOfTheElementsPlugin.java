@@ -1,13 +1,9 @@
 package dev.docvin.legendofelements;
 
-import com.hypixel.hytale.assetstore.event.LoadedAssetsEvent;
 import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
 import com.hypixel.hytale.server.core.io.adapter.PacketFilter;
-import com.hypixel.hytale.server.core.modules.entitystats.asset.EntityStatType;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import dev.docvin.legendofelements.packets.filter.UsageKeysPressed;
 import dev.docvin.legendofelements.registry.*;
 
 import javax.annotation.Nonnull;
@@ -33,7 +29,7 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
     protected void setup() {
         instance = this;
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
-        filter = PacketAdapters.registerInbound(new UsageKeysPressed());
+        //filter = PacketAdapters.registerInbound(new UsageKeysPressed());
 
         AllCodecs.registerInteractions();
         AllAssets.register();
@@ -43,12 +39,7 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
         AllComponents.register();
         AllSystems.register();
         getCommandRegistry().registerCommand(new ExampleCommand("", ""));
-        getEventRegistry().register(LoadedAssetsEvent.class, EntityStatType.class, this::onStatsLoaded);
-
-    }
-
-    private void onStatsLoaded(LoadedAssetsEvent event) {
-        System.out.println(EntityStatType.getAssetMap().getIndex("hytale:movement_speed"));
+        //getEventRegistry().register(LoadedAssetsEvent.class, EntityStatType.class, this::onStatsLoaded);
     }
 
     @Override
@@ -59,7 +50,7 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
     @Override
     protected void shutdown() {
         LOGGER.atInfo().log("Shutting down plugin " + this.getName());
-        PacketAdapters.deregisterInbound(filter);
+        //PacketAdapters.deregisterInbound(filter);
     }
 
 }

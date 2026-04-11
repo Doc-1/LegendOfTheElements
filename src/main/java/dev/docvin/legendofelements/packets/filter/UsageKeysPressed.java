@@ -17,7 +17,7 @@ public class UsageKeysPressed implements PlayerPacketFilter {
 
         for (SyncInteractionChain chain : syncPacket.updates) {
             if (chain.interactionType == InteractionType.Use) {
-                System.out.println("BLOCK!");
+                //System.out.println("BLOCK!");
 
                 //return true; // Block the "Use" action
             }
