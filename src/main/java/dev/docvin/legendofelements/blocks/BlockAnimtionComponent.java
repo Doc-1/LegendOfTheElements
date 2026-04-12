@@ -13,10 +13,13 @@ public class BlockAnimtionComponent implements Component<ChunkStore> {
     public static final BuilderCodec<BlockAnimtionComponent> CODEC = BuilderCodec.builder(BlockAnimtionComponent.class, BlockAnimtionComponent::new)
             .append(new KeyedCodec<>("AnimationLength", Codec.FLOAT), (c, v) -> c.animationLength = v, c -> c.animationLength)
             .add()
+            .append(new KeyedCodec<>("AnimationID", Codec.STRING), (c, v) -> c.animationID = v, c -> c.animationID)
+            .add()
             .build();
     private static ComponentType<ChunkStore, BlockAnimtionComponent> componentType;
 
     private float animationLength;
+    private String animationID;
 
     public static ComponentType<ChunkStore, BlockAnimtionComponent> getComponentType() {
         return componentType;
@@ -32,6 +35,14 @@ public class BlockAnimtionComponent implements Component<ChunkStore> {
 
     public void setAnimationLength(float animationLength) {
         this.animationLength = animationLength;
+    }
+
+    public String getAnimationID() {
+        return animationID;
+    }
+
+    public void setAnimationID(String animationID) {
+        this.animationID = animationID;
     }
 
     @Nullable

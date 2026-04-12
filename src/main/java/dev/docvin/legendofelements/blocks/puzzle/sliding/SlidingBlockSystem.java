@@ -1,63 +1,41 @@
 package dev.docvin.legendofelements.blocks.puzzle.sliding;
 
-import com.hypixel.hytale.component.*;
+import com.hypixel.hytale.component.CommandBuffer;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.query.Query;
-import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
-import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
-import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
+import com.hypixel.hytale.math.vector.Vector3i;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
-import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
-import com.hypixel.hytale.server.core.universe.world.chunk.section.ChunkSection;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import dev.docvin.legendofelements.blocks.BlockAnimtionComponent;
+import dev.docvin.legendofelements.blocks.entity.BlockEntityTickingSystem;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-public class SlidingBlockSystem extends EntityTickingSystem<ChunkStore> {
-    @Nonnull
-    private final ComponentType<ChunkStore, BlockAnimtionComponent> blockAnimtionComponentType;
-    @Nonnull
-    private final Archetype<ChunkStore> archetype;
+public class SlidingBlockSystem extends BlockEntityTickingSystem {
 
-    public SlidingBlockSystem(@Nonnull ComponentType<ChunkStore, BlockAnimtionComponent> blockAnimtionComponentType) {
-        this.blockAnimtionComponentType = blockAnimtionComponentType;
-        this.archetype = Archetype.of(blockAnimtionComponentType, WorldChunk.getComponentType());
+    private final Query<ChunkStore> BLOCK_QUERY = Query.and(BlockAnimtionComponent.getComponentType());
+
+    @Override
+    public void blockTick(float dt, int index, @Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull WorldChunk worldChunk, @Nonnull Vector3i targetBlock) {
+
+        World world = worldChunk.getWorld();
+        world.execute(() -> {
+            world.breakBlock(targetBlock.x, targetBlock.y, targetBlock.z, 0);
+
+        });
     }
 
     @Override
-    public void tick(float dt, int index, @Nonnull ArchetypeChunk<ChunkStore> archetypeChunk, @Nonnull Store<ChunkStore> store, @Nonnull CommandBuffer<ChunkStore> commandBufferChunk) {
-        BlockSection blocks = archetypeChunk.getComponent(index, BlockSection.getComponentType());
+    public boolean validBlock(@Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull WorldChunk worldChunk) {
+        BlockAnimtionComponent blockAnimtionComponent = commandBuffer.getComponent(ref, BlockAnimtionComponent.getComponentType());
+        assert blockAnimtionComponent != null;
 
-        assert blocks != null;
-        if (blocks.getTickingBlocksCountCopy() != 0) {
-            ChunkSection section = archetypeChunk.getComponent(index, ChunkSection.getComponentType());
-            assert section != null;
-
-            WorldChunk chunk = commandBufferChunk.getComponent(section.getChunkColumnReference(), WorldChunk.getComponentType());
-            assert chunk != null;
-
-            BlockComponentChunk blockComponentChunk = commandBufferChunk.getComponent(section.getChunkColumnReference(), BlockComponentChunk.getComponentType());
-            assert blockComponentChunk != null;
-
-            blocks.forEachTicking(blockComponentChunk, commandBufferChunk, section.getY(), (blockComponentChunk1, commandBuffer1, localX, localY, localZ, blockId) -> {
-                Ref<ChunkStore> blockRef = blockComponentChunk1.getEntityReference(blockId);
-
-                if (blockRef == null)
-                    return BlockTickStrategy.IGNORED;
-                BlockType current = chunk.getBlockType(localX, localY, localZ);
-
-                // System.out.println(current);
-                //String currentState = current.getStateForBlock(current);
-                return BlockTickStrategy.CONTINUE;
-            });
-        }
+        return blockAnimtionComponent.getAnimationID().equals("Sliding_Animation");
     }
 
-    @Nullable
     @Override
-    public Query<ChunkStore> getQuery() {
-        return this.archetype;
+    public Query<ChunkStore> getBlockQuery() {
+        return BLOCK_QUERY;
     }
 }

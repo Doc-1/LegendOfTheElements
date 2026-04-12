@@ -6,7 +6,6 @@ import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
-import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
@@ -16,6 +15,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import javax.annotation.Nonnull;
 
 public abstract class BlockEntityTickingSystem extends EntityTickingSystem<ChunkStore> {
+
     private static final Query<ChunkStore> CHUNK_QUERY = Query.and(BlockSection.getComponentType(), ChunkSection.getComponentType());
 
     @Override
@@ -31,11 +31,8 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
             assert worldChunk != null;
             assert worldChunk.getEntityChunk() != null;
 
-            World world = worldChunk.getWorld();
-
             BlockComponentChunk blockComponentChunk = commandBufferChunk.getComponent(section.getChunkColumnReference(), BlockComponentChunk.getComponentType());
             assert blockComponentChunk != null;
-
             blocks.forEachTicking(blockComponentChunk, commandBufferChunk, section.getY(), (blockComponentChunk1, commandBuffer1, localX, localY, localZ, blockId) -> {
                 Ref<ChunkStore> blockRef = blockComponentChunk1.getEntityReference(ChunkUtil.indexBlockInColumn(localX, localY, localZ));
                 Archetype<ChunkStore> archetype;
@@ -43,9 +40,10 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
                     return BlockTickStrategy.IGNORED;
                 else
                     archetype = commandBuffer1.getArchetype(blockRef);
-
-                if (this.getBlockQuery().test(archetype)) {
-                    this.blockTick(dt, blockId, archetype, blockRef, commandBuffer1, new Vector3i(localX, localY, localZ));
+                int globalX = worldChunk.getX() * 32 + localX;
+                int globalY = worldChunk.getZ() * 32 + localZ;
+                if (this.getBlockQuery().test(archetype) && this.validBlock(blockRef, commandBuffer1, worldChunk)) {
+                    this.blockTick(dt, blockId, blockRef, commandBuffer1, worldChunk, new Vector3i(globalX, localY, globalY));
                     return BlockTickStrategy.CONTINUE;
                 } else
                     return BlockTickStrategy.IGNORED;
@@ -54,16 +52,27 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
     }
 
     /**
-     * This method will run every tick for any block entity that matches the {@link BlockEntityTickingSystem#blockTick(float, int, Archetype, Ref, CommandBuffer, Vector3i)} provided
+     * This method will run every tick for any block entity that matches the {@link Query} provided by {@link #getBlockQuery()}
      *
      * @param dt            delta, the time delay between frames
      * @param index         id of the block used to get the ref
-     * @param archetype     archetype of the block
      * @param ref           reference of the block
      * @param commandBuffer command buffer of the block
-     * @param targetBlock   local location of the block within the chunk
+     * @param targetBlock   global location of the block
      */
-    public abstract void blockTick(float dt, int index, Archetype<ChunkStore> archetype, @Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull Vector3i targetBlock);
+    public abstract void blockTick(float dt, int index, @Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull WorldChunk worldChunk, @Nonnull Vector3i targetBlock);
+
+
+    /**
+     * Allows for an extra check to make sure the block being ticked is the correct block.
+     *
+     * @param ref           reference of the block
+     * @param commandBuffer command buffer of the block
+     * @return true if the referenced block matches the conditions set
+     */
+    public boolean validBlock(@Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull WorldChunk worldChunk) {
+        return true;
+    }
 
     public abstract Query<ChunkStore> getBlockQuery();
 

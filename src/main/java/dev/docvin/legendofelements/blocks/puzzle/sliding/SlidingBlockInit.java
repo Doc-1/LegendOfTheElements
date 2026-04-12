@@ -23,9 +23,13 @@ public class SlidingBlockInit extends RefSystem<ChunkStore> {
         int localY = ChunkUtil.yFromBlockInColumn(info.getIndex());
         int localZ = ChunkUtil.zFromBlockInColumn(info.getIndex());
 
+        BlockAnimtionComponent generator = commandBuffer.getComponent(ref, BlockAnimtionComponent.getComponentType());
+        assert generator != null;
+
         WorldChunk worldChunk = commandBuffer.getComponent(info.getChunkRef(), WorldChunk.getComponentType());
         assert worldChunk != null;
 
+        generator.setAnimationID("Sliding_Animation");
         worldChunk.setTicking(localX, localY, localZ, true);
 
         //To do check for when state changes

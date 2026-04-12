@@ -1,6 +1,5 @@
 package dev.docvin.legendofelements.registry;
 
-import dev.docvin.legendofelements.blocks.BlockAnimtionComponent;
 import dev.docvin.legendofelements.blocks.puzzle.sliding.SlidingBlockInit;
 import dev.docvin.legendofelements.blocks.puzzle.sliding.SlidingBlockSystem;
 import dev.docvin.legendofelements.blocks.standingrunes.breeze.StandingRuneBreezeInit;
@@ -17,7 +16,7 @@ public class AllSystems implements AllRegistries {
         AllRegistries.getPlugin().getEntityStoreRegistry().registerSystem(new AccelerateSystem());
 
         AllRegistries.getPlugin().getChunkStoreRegistry().registerSystem(new SlidingBlockInit());
-        AllRegistries.getPlugin().getChunkStoreRegistry().registerSystem(new SlidingBlockSystem(BlockAnimtionComponent.getComponentType()));
+        AllRegistries.getPlugin().getChunkStoreRegistry().registerSystem(new SlidingBlockSystem());
 
 
         AllRegistries.getPlugin().getChunkStoreRegistry().registerSystem(new StandingRuneBreezeInit());
