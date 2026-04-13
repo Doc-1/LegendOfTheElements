@@ -2,7 +2,6 @@ package dev.docvin.legendofelements.blocks.puzzle.sliding;
 
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.CommandBuffer;
-import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.protocol.BlockFace;
@@ -10,7 +9,6 @@ import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
-import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.CooldownHandler;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.client.SimpleBlockInteraction;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -32,22 +30,26 @@ public class SlideBlockInteraction extends SimpleBlockInteraction {
         WorldChunk chunk = world.getChunkIfInMemory(ChunkUtil.indexChunkFromBlock(targetBlock.x, targetBlock.z));
         if (chunk == null)
             return;
-        Ref<EntityStore> ref = context.getOwningEntity();
-        TransformComponent component = commandBuffer.getComponent(ref, TransformComponent.getComponentType());
-        if (component != null && context.getClientState() != null) {
-            BlockType blockType = chunk.getBlockType(targetBlock);
-            BlockFace blockFace = context.getClientState().blockFace;
 
-            String interactionStateToSend = switch (blockFace) {
-                case North -> "Slide_South";
-                case East -> "Slide_West";
-                case South -> "Slide_North";
-                case West -> "Slide_East";
-                default -> "";
-            };
+        if (context.getClientState() != null) {
+            BlockType blockType = chunk.getBlockType(targetBlock);
             assert blockType != null;
 
-            world.setBlockInteractionState(targetBlock, blockType, interactionStateToSend);
+            String blockState = blockType.getStateForBlock(blockType);
+            String defaultBlockState = blockType.getDefaultStateKey();
+
+            if (blockState == null || blockState.equals(defaultBlockState)) {
+                BlockFace blockFace = context.getClientState().blockFace;
+                String interactionStateToSend = switch (blockFace) {
+                    case North -> "Slide_South";
+                    case East -> "Slide_West";
+                    case South -> "Slide_North";
+                    case West -> "Slide_East";
+                    default -> "";
+                };
+                world.setBlockInteractionState(targetBlock, blockType, interactionStateToSend);
+                chunk.setTicking(targetBlock.x, targetBlock.y, targetBlock.z, true);
+            }
         }
     }
 

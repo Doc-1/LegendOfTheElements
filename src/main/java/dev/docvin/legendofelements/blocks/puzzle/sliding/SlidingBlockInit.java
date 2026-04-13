@@ -30,9 +30,8 @@ public class SlidingBlockInit extends RefSystem<ChunkStore> {
         assert worldChunk != null;
 
         generator.setAnimationID("Sliding_Animation");
+        generator.setAnimationLength(1.0F);
         worldChunk.setTicking(localX, localY, localZ, true);
-
-        //To do check for when state changes
     }
 
     @Override

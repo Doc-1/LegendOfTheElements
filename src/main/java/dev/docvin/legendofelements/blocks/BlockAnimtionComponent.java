@@ -20,6 +20,7 @@ public class BlockAnimtionComponent implements Component<ChunkStore> {
 
     private float animationLength;
     private String animationID;
+    private float animationTick;
 
     public static ComponentType<ChunkStore, BlockAnimtionComponent> getComponentType() {
         return componentType;
@@ -27,6 +28,15 @@ public class BlockAnimtionComponent implements Component<ChunkStore> {
 
     public static void setComponentType(ComponentType<ChunkStore, BlockAnimtionComponent> componentType) {
         BlockAnimtionComponent.componentType = componentType;
+    }
+
+    public void tickAnimation(float delta) {
+        if (animationTick < animationLength)
+            animationTick += delta;
+    }
+
+    public boolean animationCompleted() {
+        return animationLength <= animationTick;
     }
 
     public float getAnimationLength() {

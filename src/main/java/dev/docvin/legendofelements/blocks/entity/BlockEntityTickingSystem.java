@@ -40,6 +40,8 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
                     return BlockTickStrategy.IGNORED;
                 else
                     archetype = commandBuffer1.getArchetype(blockRef);
+
+
                 int globalX = worldChunk.getX() * 32 + localX;
                 int globalY = worldChunk.getZ() * 32 + localZ;
                 if (this.getBlockQuery().test(archetype) && this.validBlock(blockRef, commandBuffer1, worldChunk)) {
