@@ -41,7 +41,6 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
                 else
                     archetype = commandBuffer1.getArchetype(blockRef);
 
-
                 int globalX = worldChunk.getX() * 32 + localX;
                 int globalY = worldChunk.getZ() * 32 + localZ;
                 if (this.getBlockQuery().test(archetype) && this.validBlock(blockRef, commandBuffer1, worldChunk)) {
@@ -54,7 +53,8 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
     }
 
     /**
-     * This method will run every tick for any block entity that matches the {@link Query} provided by {@link #getBlockQuery()}
+     * This method will run every tick for any block entity that matches the {@link Query} provided by {@link #getBlockQuery()} and if {@link #validBlock(Ref, CommandBuffer, WorldChunk)}
+     * returns a true.
      *
      * @param dt            delta, the time delay between frames
      * @param index         id of the block used to get the ref
@@ -66,16 +66,23 @@ public abstract class BlockEntityTickingSystem extends EntityTickingSystem<Chunk
 
 
     /**
-     * Allows for an extra check to make sure the block being ticked is the correct block.
+     * Allows for a more defined check if the component check provided by {@link #getBlockQuery()} is not enough to handle only the desired block entities.
+     * If the return remains true then the system will only use {@link #getBlockQuery()} to check the block entity.
      *
      * @param ref           reference of the block
      * @param commandBuffer command buffer of the block
-     * @return true if the referenced block matches the conditions set
+     * @return true if the block should be handled by this system.
      */
     public boolean validBlock(@Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull WorldChunk worldChunk) {
         return true;
     }
 
+    /**
+     * Provides the query that will be used to check the ticking block entity to see if it should be handled by this system. For example,
+     * if you set the {@link Query} to "Query.and(CoopBlock.getComponentType());" the system will only handle blocks with that component assigned to it.
+     *
+     * @return the {@link Query} that defines the required components the ticking block entity must contain.
+     */
     public abstract Query<ChunkStore> getBlockQuery();
 
     @Override

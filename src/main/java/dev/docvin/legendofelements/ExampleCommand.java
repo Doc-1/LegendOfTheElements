@@ -16,9 +16,7 @@ import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
 
 import javax.annotation.Nonnull;
 
-/**
- * This is an example command that will simply print the name of the plugin in chat when used.
- */
+@Deprecated
 public class ExampleCommand extends AbstractPlayerCommand {
 
 

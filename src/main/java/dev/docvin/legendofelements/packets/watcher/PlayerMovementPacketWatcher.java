@@ -15,6 +15,7 @@ import dev.docvin.legendofelements.event.events.player.PlayerMovementEvent;
 
 import java.util.UUID;
 
+@Deprecated
 public class PlayerMovementPacketWatcher implements PlayerPacketWatcher {
 
     @Override

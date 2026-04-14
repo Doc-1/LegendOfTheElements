@@ -12,6 +12,9 @@ import dev.docvin.legendofelements.LegendOfTheElementsPlugin;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Just a place to keep all registries in one nice and neat place.
+ */
 public interface AllRegistries {
 
     static LegendOfTheElementsPlugin getPlugin() {

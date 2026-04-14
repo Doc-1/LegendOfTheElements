@@ -29,8 +29,10 @@ public class SlidingBlockInit extends RefSystem<ChunkStore> {
         WorldChunk worldChunk = commandBuffer.getComponent(info.getChunkRef(), WorldChunk.getComponentType());
         assert worldChunk != null;
 
+        //default values for block entities with the BlockAnimtionComponent assigned to it.
         generator.setAnimationID("Sliding_Animation");
         generator.setAnimationLength(1.0F);
+
         worldChunk.setTicking(localX, localY, localZ, true);
     }
 

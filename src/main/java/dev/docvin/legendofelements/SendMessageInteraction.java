@@ -17,6 +17,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
 
+@Deprecated
 public class SendMessageInteraction extends SimpleInstantInteraction {
     public static final BuilderCodec<SendMessageInteraction> CODEC = BuilderCodec.builder(
             SendMessageInteraction.class, SendMessageInteraction::new, SimpleInstantInteraction.CODEC

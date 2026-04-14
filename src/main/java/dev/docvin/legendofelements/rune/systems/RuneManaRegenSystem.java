@@ -13,12 +13,13 @@ import dev.docvin.legendofelements.rune.components.RuneManaComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+/**
+ * System that handles player entities with the {@link RuneManaRegenComponent}
+ */
 public class RuneManaRegenSystem extends EntityTickingSystem<EntityStore> {
 
 
-    @Nonnull
     private static final Query<EntityStore> QUERY = Query.and(RuneManaRegenComponent.getComponentType(), RuneManaComponent.getComponentType());
 
     @Override
@@ -47,7 +48,6 @@ public class RuneManaRegenSystem extends EntityTickingSystem<EntityStore> {
         }
     }
 
-    @Nullable
     @Override
     public Query<EntityStore> getQuery() {
         return QUERY;

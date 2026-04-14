@@ -9,6 +9,10 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nullable;
 
+/**
+ * A simple component for player entities to keep track of mana or magical energy needed to cast
+ * runic spells.
+ */
 public class RuneManaComponent implements Component<EntityStore> {
 
     public static final BuilderCodec<RuneManaComponent> CODEC =

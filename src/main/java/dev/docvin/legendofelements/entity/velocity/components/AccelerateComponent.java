@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nullable;
 
+@Deprecated
 public class AccelerateComponent implements Component<EntityStore> {
 
     private static ComponentType<EntityStore, AccelerateComponent> componentType;
@@ -40,7 +41,7 @@ public class AccelerateComponent implements Component<EntityStore> {
     public Vector3d getVelocity() {
         Vector3d finalNormalized = finalPosition.normalize();
         Vector3d originNormalized = originPosition.normalize();
-        
+
         return finalNormalized.subtract(originNormalized).normalize();
     }
 

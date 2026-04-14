@@ -13,6 +13,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A component for player entities to keep track of the rune spells they have learnt.
+ */
 public class KnownRuneSpellsComponent implements Component<EntityStore> {
 
     public static final BuilderCodec<KnownRuneSpellsComponent> CODEC =

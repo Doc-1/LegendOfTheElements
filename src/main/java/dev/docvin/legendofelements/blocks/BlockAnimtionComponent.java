@@ -9,6 +9,10 @@ import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 
 import javax.annotation.Nullable;
 
+/**
+ * Use this component to keep track of duration of block animation. Is used to get around an issue I was having
+ * when using run time in the interaction, it prevented more than one of the same interaction to run at the sametime.
+ */
 public class BlockAnimtionComponent implements Component<ChunkStore> {
     public static final BuilderCodec<BlockAnimtionComponent> CODEC = BuilderCodec.builder(BlockAnimtionComponent.class, BlockAnimtionComponent::new)
             .append(new KeyedCodec<>("AnimationLength", Codec.FLOAT), (c, v) -> c.animationLength = v, c -> c.animationLength)

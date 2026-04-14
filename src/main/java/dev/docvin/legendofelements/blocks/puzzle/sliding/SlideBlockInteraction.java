@@ -38,6 +38,7 @@ public class SlideBlockInteraction extends SimpleBlockInteraction {
             String blockState = blockType.getStateForBlock(blockType);
             String defaultBlockState = blockType.getDefaultStateKey();
 
+            //Check prevents sliding block from playing animation when one is already playing
             if (blockState == null || blockState.equals(defaultBlockState)) {
                 BlockFace blockFace = context.getClientState().blockFace;
                 String interactionStateToSend = switch (blockFace) {

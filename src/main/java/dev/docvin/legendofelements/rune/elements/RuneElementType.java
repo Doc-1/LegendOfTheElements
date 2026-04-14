@@ -1,5 +1,8 @@
 package dev.docvin.legendofelements.rune.elements;
 
+/**
+ * The possible element types.
+ */
 public enum RuneElementType {
     WIND("Wind"),
     EARTH("Earth"),

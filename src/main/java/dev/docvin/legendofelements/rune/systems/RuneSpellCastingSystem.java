@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-
+/**
+ * System for handle the runic spell the player is trying to cast.
+ */
 public class RuneSpellCastingSystem extends EntityTickingSystem<EntityStore> {
     @Nonnull
     private static final Query<EntityStore> QUERY = Query.and(RuneManaComponent.getComponentType(), KnownRuneSpellsComponent.getComponentType(), InteractionModule.get().getInteractionManagerComponent());
@@ -38,6 +40,7 @@ public class RuneSpellCastingSystem extends EntityTickingSystem<EntityStore> {
         KnownRuneSpellsComponent knownSpellsComponent = ref.getStore().getComponent(ref, KnownRuneSpellsComponent.getComponentType());
         assert knownSpellsComponent != null;
 
+        //todo design a spell selection system.
         RuneSpellsAsset runeSpell = RuneSpellsAsset.getAssetMap().getAssetMap().get("Updraft");
         String rootID = runeSpell.getInteractions().get(InteractionType.Ability2);
         RootInteraction interaction = RootInteraction.getAssetMap().getAsset(rootID);

@@ -7,6 +7,7 @@ import com.hypixel.hytale.protocol.packets.interaction.SyncInteractionChains;
 import com.hypixel.hytale.server.core.io.adapter.PlayerPacketFilter;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 
+@Deprecated
 public class UsageKeysPressed implements PlayerPacketFilter {
 
     @Override

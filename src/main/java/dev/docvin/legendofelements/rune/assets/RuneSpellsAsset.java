@@ -27,6 +27,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The settings for any Rune Spell that is to be created.
+ */
 public class RuneSpellsAsset implements JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, RuneSpellsAsset>> {
 
     public static final AssetBuilderCodec<String, RuneSpellsAsset> CODEC = AssetBuilderCodec.builder(

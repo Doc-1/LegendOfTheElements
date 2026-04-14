@@ -17,6 +17,7 @@ import dev.docvin.legendofelements.entity.velocity.components.AccelerateComponen
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@Deprecated
 public class AccelerateSystem extends EntityTickingSystem<EntityStore> implements IVelocityModifyingSystem {
     @Nonnull
     private static final Query<EntityStore> QUERY = Query.and(Velocity.getComponentType(), AccelerateComponent.getComponentType(), TransformComponent.getComponentType());
