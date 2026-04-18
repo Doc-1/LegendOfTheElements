@@ -1,18 +1,23 @@
 package dev.docvin.legendofelements;
 
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.math.shape.Box;
+import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
+import com.hypixel.hytale.server.core.asset.type.model.config.camera.CameraAxis;
+import com.hypixel.hytale.server.core.asset.type.model.config.camera.CameraSettings;
 import com.hypixel.hytale.server.core.io.adapter.PacketFilter;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import dev.docvin.legendofelements.registry.*;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LegendOfTheElementsPlugin extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static LegendOfTheElementsPlugin instance;
-
     private PacketFilter filter;
 
     public LegendOfTheElementsPlugin(@Nonnull JavaPluginInit init) {
@@ -23,6 +28,23 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
 
     public static LegendOfTheElementsPlugin get() {
         return instance;
+    }
+
+    private static List<ModelAsset> getModelAssets() {
+        List<ModelAsset> modelAssetList = new ArrayList<>();
+        ModelAsset modelAsset = new ModelAsset() {
+            {
+                this.id = "Test";
+                this.model = "Blocks/Sliding_Block.blockymodel";
+                this.texture = "Items/Texture.png";
+                this.camera = new CameraSettings((com.hypixel.hytale.protocol.Vector3f) null, CameraAxis.STATIC_HEAD, CameraAxis.STATIC_HEAD);
+                this.boundingBox = Box.horizontallyCentered(0.5, 0.5, 0.5);
+                this.minScale = 1.0F;
+                this.maxScale = 1.0F;
+            }
+        };
+        modelAssetList.add(modelAsset);
+        return modelAssetList;
     }
 
     @Override
@@ -39,7 +61,11 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
         AllComponents.register();
         AllSystems.register();
         getCommandRegistry().registerCommand(new ExampleCommand("", ""));
-        //getEventRegistry().register(LoadedAssetsEvent.class, EntityStatType.class, this::onStatsLoaded);
+
+        List<ModelAsset> modelAssetList = getModelAssets();
+        ModelAsset.getAssetStore().loadAssets(LegendOfTheElementsPlugin.get().getName(), modelAssetList);
+
+
     }
 
     @Override

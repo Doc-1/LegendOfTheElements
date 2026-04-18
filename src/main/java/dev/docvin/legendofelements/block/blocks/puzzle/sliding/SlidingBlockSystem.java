@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.puzzle.sliding;
+package dev.docvin.legendofelements.block.blocks.puzzle.sliding;
 
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
@@ -8,8 +8,8 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import dev.docvin.legendofelements.blocks.BlockAnimtionComponent;
-import dev.docvin.legendofelements.blocks.entity.BlockEntityTickingSystem;
+import dev.docvin.legendofelements.block.BlockAnimtionComponent;
+import dev.docvin.legendofelements.block.entities.BlockEntityTickingSystem;
 
 import javax.annotation.Nonnull;
 

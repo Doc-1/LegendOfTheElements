@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.standingrunes.breeze;
+package dev.docvin.legendofelements.block.blocks.standingrunes.breeze;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;

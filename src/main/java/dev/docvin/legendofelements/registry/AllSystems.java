@@ -1,9 +1,9 @@
 package dev.docvin.legendofelements.registry;
 
-import dev.docvin.legendofelements.blocks.puzzle.sliding.SlidingBlockInit;
-import dev.docvin.legendofelements.blocks.puzzle.sliding.SlidingBlockSystem;
-import dev.docvin.legendofelements.blocks.standingrunes.breeze.StandingRuneBreezeInit;
-import dev.docvin.legendofelements.blocks.standingrunes.breeze.StandingRuneBreezeSystem;
+import dev.docvin.legendofelements.block.blocks.puzzle.sliding.SlidingBlockInit;
+import dev.docvin.legendofelements.block.blocks.puzzle.sliding.SlidingBlockSystem;
+import dev.docvin.legendofelements.block.blocks.standingrunes.breeze.StandingRuneBreezeInit;
+import dev.docvin.legendofelements.block.blocks.standingrunes.breeze.StandingRuneBreezeSystem;
 import dev.docvin.legendofelements.entity.velocity.systems.AccelerateSystem;
 import dev.docvin.legendofelements.rune.systems.RuneManaRegenSystem;
 import dev.docvin.legendofelements.rune.systems.RuneSpellCastingSystem;

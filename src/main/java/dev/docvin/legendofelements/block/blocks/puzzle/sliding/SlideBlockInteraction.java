@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.puzzle.sliding;
+package dev.docvin.legendofelements.block.blocks.puzzle.sliding;
 
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.CommandBuffer;

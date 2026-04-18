@@ -37,6 +37,7 @@ public class ExampleCommand extends AbstractPlayerCommand {
         assert player != null;
         //Objects.requireNonNull(ref.getStore().getComponent(ref, RuneKnownSpellsComponent.getComponentType())).learnRuneSpell(RuneSpellManager.get().getRuneSpell("Updraft"));
         player.sendMessage(Message.raw("You have Elemental Magic Now!").color("Green").bold(true));
+
     }
 
 }

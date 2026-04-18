@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.blocks.puzzle.sliding;
+package dev.docvin.legendofelements.block.blocks.puzzle.sliding;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
@@ -7,7 +7,7 @@ import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.server.core.modules.block.BlockModule;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import dev.docvin.legendofelements.blocks.BlockAnimtionComponent;
+import dev.docvin.legendofelements.block.BlockAnimtionComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

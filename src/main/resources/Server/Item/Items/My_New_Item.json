@@ -19,7 +19,8 @@
     "Secondary": {
       "Interactions": [
         {
-          "Type": "my_custom_interaction_id"
+          "Type": "Spawn_Falling_Block_Interaction",
+          "UseLatestTarget": true
         }
       ]
     },
