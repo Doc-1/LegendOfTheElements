@@ -12,7 +12,9 @@ import dev.docvin.legendofelements.registry.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LegendOfTheElementsPlugin extends JavaPlugin {
 
@@ -42,6 +44,13 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
                 this.minScale = 1.0F;
                 this.maxScale = 1.0F;
             }
+
+            @Override
+            public Map<String, AnimationSet> getAnimationSetMap() {
+                Map<String, AnimationSet> map = new HashMap<>();
+                map.put("empty", new AnimationSet());
+                return map;
+            }
         };
         modelAssetList.add(modelAsset);
         return modelAssetList;
@@ -67,6 +76,7 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
 
 
     }
+
 
     @Override
     protected void start() {

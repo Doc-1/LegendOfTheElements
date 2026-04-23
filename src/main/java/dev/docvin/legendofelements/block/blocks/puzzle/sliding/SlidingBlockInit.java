@@ -8,12 +8,13 @@ import com.hypixel.hytale.server.core.modules.block.BlockModule;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import dev.docvin.legendofelements.block.BlockAnimtionComponent;
+import dev.docvin.legendofelements.block.FirstRunComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SlidingBlockInit extends RefSystem<ChunkStore> {
-    private static final Query<ChunkStore> QUERY = Query.and(BlockModule.BlockStateInfo.getComponentType(), BlockAnimtionComponent.getComponentType());
+    private static final Query<ChunkStore> QUERY = Query.and(BlockModule.BlockStateInfo.getComponentType(), BlockAnimtionComponent.getComponentType(), FirstRunComponent.getComponentType());
 
     @Override
     public void onEntityAdded(@Nonnull Ref<ChunkStore> ref, @Nonnull AddReason addReason, @Nonnull Store<ChunkStore> store, @Nonnull CommandBuffer<ChunkStore> commandBuffer) {
@@ -25,6 +26,10 @@ public class SlidingBlockInit extends RefSystem<ChunkStore> {
 
         BlockAnimtionComponent generator = commandBuffer.getComponent(ref, BlockAnimtionComponent.getComponentType());
         assert generator != null;
+
+        FirstRunComponent firstRunGen = commandBuffer.getComponent(ref, FirstRunComponent.getComponentType());
+        assert firstRunGen != null;
+        firstRunGen.setRan(false);
 
         WorldChunk worldChunk = commandBuffer.getComponent(info.getChunkRef(), WorldChunk.getComponentType());
         assert worldChunk != null;

@@ -87,8 +87,8 @@ public class StandingRuneBreezeSystem extends EntityTickingSystem<ChunkStore> {
         }
     }
 
-    private double controlSpeed(double speed, float mod, float dt) {
-        if (speed >= 0 && speed < mod) {
+    private double controlSpeed(double speed, float max, float dt) {
+        if (speed >= 0 && speed < max) {
             speed += 5 * dt;
         } else {
             speed -= 4 * dt;

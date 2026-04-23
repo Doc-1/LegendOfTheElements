@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block.entities;
+package dev.docvin.legendofelements.block;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
