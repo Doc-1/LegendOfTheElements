@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.entity.entities;
+package dev.docvin.legendofelements.entity.entities.components;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;

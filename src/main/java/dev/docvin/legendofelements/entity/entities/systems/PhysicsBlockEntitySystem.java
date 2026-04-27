@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.entity.entities;
+package dev.docvin.legendofelements.entity.entities.systems;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.modules.physics.component.Velocity;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.docvin.legendofelements.entity.entities.components.PhysicsBlockComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

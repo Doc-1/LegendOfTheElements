@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block.blocks.standingrunes.breeze;
+package dev.docvin.legendofelements.chunk.blocks.entities;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.RotationTuple;
 import com.hypixel.hytale.server.core.modules.block.BlockModule;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import dev.docvin.legendofelements.chunk.blocks.components.StandingRuneBreezeComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

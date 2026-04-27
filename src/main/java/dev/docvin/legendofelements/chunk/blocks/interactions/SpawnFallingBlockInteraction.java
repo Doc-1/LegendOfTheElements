@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block;
+package dev.docvin.legendofelements.chunk.blocks.interactions;
 
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.AddReason;
@@ -25,7 +25,7 @@ import com.hypixel.hytale.server.core.modules.physics.component.Velocity;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.docvin.legendofelements.entity.entities.PhysicsBlockComponent;
+import dev.docvin.legendofelements.entity.entities.components.PhysicsBlockComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

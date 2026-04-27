@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block.blocks.standingrunes.breeze;
+package dev.docvin.legendofelements.chunk.blocks.systems;
 
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -24,6 +24,7 @@ import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.ChunkSection;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.docvin.legendofelements.chunk.blocks.components.StandingRuneBreezeComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block;
+package dev.docvin.legendofelements.chunk.components;
 
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;

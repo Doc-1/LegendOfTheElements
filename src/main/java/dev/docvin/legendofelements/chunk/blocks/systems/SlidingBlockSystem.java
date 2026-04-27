@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block.blocks.puzzle.sliding;
+package dev.docvin.legendofelements.chunk.blocks.systems;
 
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -11,7 +11,10 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.docvin.legendofelements.block.*;
+import dev.docvin.legendofelements.chunk.blocks.components.BlockAnimtionComponent;
+import dev.docvin.legendofelements.chunk.blocks.components.BlockNeighbourNotifierComponent;
+import dev.docvin.legendofelements.chunk.components.FirstRunComponent;
+import dev.docvin.legendofelements.chunk.blocks.interactions.SpawnFallingBlockInteraction;
 
 import javax.annotation.Nonnull;
 
@@ -70,7 +73,6 @@ public class SlidingBlockSystem extends BlockEntityTickingSystem {
             }
         }
     }
-
 
     @Override
     public boolean validBlock(@Nonnull Ref<ChunkStore> ref, @Nonnull CommandBuffer<ChunkStore> commandBuffer, @Nonnull WorldChunk worldChunk) {

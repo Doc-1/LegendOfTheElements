@@ -1,11 +1,11 @@
-package dev.docvin.legendofelements.block;
+package dev.docvin.legendofelements.chunk.blocks.components;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import dev.docvin.legendofelements.registry.data.Component;
 
 import javax.annotation.Nullable;
 
@@ -13,15 +13,15 @@ import javax.annotation.Nullable;
  * Use this component to keep track of duration of block animation. Is used to get around an issue I was having
  * when using run time in the interaction, it prevented more than one of the same interaction to run at the sametime.
  */
-public class BlockAnimtionComponent implements Component<ChunkStore> {
-    public static final BuilderCodec<BlockAnimtionComponent> CODEC = BuilderCodec.builder(BlockAnimtionComponent.class, BlockAnimtionComponent::new)
+public class BlockAnimtionComponent implements Component<BlockAnimtionComponent, ChunkStore> {
+    public static BuilderCodec<BlockAnimtionComponent> CODEC = BuilderCodec.builder(BlockAnimtionComponent.class, BlockAnimtionComponent::new)
             .append(new KeyedCodec<>("AnimationLength", Codec.FLOAT), (c, v) -> c.animationLength = v, c -> c.animationLength)
             .add()
             .append(new KeyedCodec<>("AnimationID", Codec.STRING), (c, v) -> c.animationID = v, c -> c.animationID)
             .add()
             .build();
-    private static ComponentType<ChunkStore, BlockAnimtionComponent> componentType;
 
+    private static ComponentType<ChunkStore, BlockAnimtionComponent> componentType;
     private float animationLength;
     private String animationID;
     private float animationTick;
@@ -30,8 +30,9 @@ public class BlockAnimtionComponent implements Component<ChunkStore> {
         return componentType;
     }
 
-    public static void setComponentType(ComponentType<ChunkStore, BlockAnimtionComponent> componentType) {
-        BlockAnimtionComponent.componentType = componentType;
+    @Override
+    public void setComponentType(ComponentType<ChunkStore, BlockAnimtionComponent> staticComponentType) {
+        BlockAnimtionComponent.componentType = staticComponentType;
     }
 
     public void tickAnimation(float delta) {
@@ -61,7 +62,13 @@ public class BlockAnimtionComponent implements Component<ChunkStore> {
 
     @Nullable
     @Override
-    public Component<ChunkStore> clone() {
+    public com.hypixel.hytale.component.Component<ChunkStore> clone() {
         return new BlockAnimtionComponent();
     }
+
+    @Override
+    public String getComponentId() {
+        return "";
+    }
+
 }

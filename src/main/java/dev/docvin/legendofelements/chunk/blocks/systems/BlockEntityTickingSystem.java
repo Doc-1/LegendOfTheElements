@@ -1,4 +1,4 @@
-package dev.docvin.legendofelements.block;
+package dev.docvin.legendofelements.chunk.blocks.systems;
 
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
