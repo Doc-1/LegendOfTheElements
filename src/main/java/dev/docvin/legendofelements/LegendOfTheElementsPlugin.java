@@ -8,9 +8,12 @@ import com.hypixel.hytale.server.core.asset.type.model.config.camera.CameraSetti
 import com.hypixel.hytale.server.core.io.adapter.PacketFilter;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import dev.docvin.legendofelements.commands.SpawnItemKey;
+import dev.docvin.legendofelements.commands.SpawnItemLock;
 import dev.docvin.legendofelements.registry.*;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +65,12 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
         //filter = PacketAdapters.registerInbound(new UsageKeysPressed());
 
-        AllCodecs.registerInteractions();
+        try {
+            AllInteractions.registerInteractions();
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
         AllAssets.register();
 
         AllEvents.register();
@@ -70,6 +78,8 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
         AllComponents.register();
         AllSystems.register();
         getCommandRegistry().registerCommand(new ExampleCommand("", ""));
+        getCommandRegistry().registerCommand(new SpawnItemKey());
+        getCommandRegistry().registerCommand(new SpawnItemLock());
 
         List<ModelAsset> modelAssetList = getModelAssets();
         ModelAsset.getAssetStore().loadAssets(LegendOfTheElementsPlugin.get().getName(), modelAssetList);

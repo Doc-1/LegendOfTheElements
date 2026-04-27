@@ -19,7 +19,7 @@
     "Secondary": {
       "Interactions": [
         {
-          "Type": "Spawn_Falling_Block_Interaction",
+          "Type": "Use_Key_Interaction",
           "UseLatestTarget": true
         }
       ]

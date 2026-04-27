@@ -3,9 +3,9 @@ package dev.docvin.legendofelements.rune.components;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.docvin.legendofelements.registry.data.Component;
 import dev.docvin.legendofelements.rune.assets.RuneSpellsAsset;
 import dev.docvin.legendofelements.rune.exception.AlreadyKnowsRuneSpellException;
 
@@ -16,23 +16,28 @@ import java.util.List;
 /**
  * A component for player entities to keep track of the rune spells they have learnt.
  */
-public class KnownRuneSpellsComponent implements Component<EntityStore> {
-
-    public static final BuilderCodec<KnownRuneSpellsComponent> CODEC =
-            BuilderCodec.builder(KnownRuneSpellsComponent.class, KnownRuneSpellsComponent::new)
-                    .append(new KeyedCodec<>("KnownRuneSpells", Codec.STRING_ARRAY),
-                            (c, v) -> c.knownSpells = v, c -> c.knownSpells)
-                    .add()
-                    .build();
-    private static ComponentType<EntityStore, KnownRuneSpellsComponent> type;
+public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsComponent, EntityStore> {
+    public static final BuilderCodec<KnownRuneSpellsComponent> CODEC = BuilderCodec.builder(KnownRuneSpellsComponent.class, KnownRuneSpellsComponent::new)
+            .append(new KeyedCodec<>("KnownRuneSpells", Codec.STRING_ARRAY),
+                    (c, v) -> c.knownSpells = v, c -> c.knownSpells)
+            .add()
+            .build();
+    private static ComponentType<EntityStore, KnownRuneSpellsComponent> componentType;
     private String[] knownSpells;
 
     public static ComponentType<EntityStore, KnownRuneSpellsComponent> getComponentType() {
-        return type;
+        return componentType;
     }
 
-    public static void setComponentType(ComponentType<EntityStore, KnownRuneSpellsComponent> type) {
-        KnownRuneSpellsComponent.type = type;
+    @Override
+    public void setComponentType(ComponentType<EntityStore, KnownRuneSpellsComponent> staticComponentType) {
+        componentType = staticComponentType;
+    }
+
+
+    @Override
+    public String getComponentId() {
+        return "";
     }
 
     public void learnRuneSpell(RuneSpellsAsset spell) throws AlreadyKnowsRuneSpellException {
@@ -43,7 +48,6 @@ public class KnownRuneSpellsComponent implements Component<EntityStore> {
         } else
             throw new AlreadyKnowsRuneSpellException(spell);
     }
-
 
     public boolean knowsRuneSpell(RuneSpellsAsset spell) {
         if (knownSpells == null)
@@ -59,8 +63,9 @@ public class KnownRuneSpellsComponent implements Component<EntityStore> {
 
     @Nullable
     @Override
-    public Component<EntityStore> clone() {
+    public com.hypixel.hytale.component.Component<EntityStore> clone() {
         return null;
     }
+
 
 }
