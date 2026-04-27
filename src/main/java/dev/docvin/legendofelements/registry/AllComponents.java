@@ -3,11 +3,13 @@ package dev.docvin.legendofelements.registry;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.docvin.legendofelements.block.BlockAnimtionComponent;
-import dev.docvin.legendofelements.block.BlockNeighbourNotifierComponent;
-import dev.docvin.legendofelements.block.FirstRunComponent;
-import dev.docvin.legendofelements.block.blocks.standingrunes.breeze.StandingRuneBreezeComponent;
-import dev.docvin.legendofelements.entity.entities.PhysicsBlockComponent;
+import dev.docvin.legendofelements.chunk.blocks.components.BlockAnimtionComponent;
+import dev.docvin.legendofelements.chunk.blocks.components.BlockNeighbourNotifierComponent;
+import dev.docvin.legendofelements.chunk.blocks.components.LockableBlockComponent;
+import dev.docvin.legendofelements.chunk.blocks.components.StandingRuneBreezeComponent;
+import dev.docvin.legendofelements.chunk.components.FirstRunComponent;
+import dev.docvin.legendofelements.entity.entities.components.PhysicsBlockComponent;
+import dev.docvin.legendofelements.items.ItemKeyComponent;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
@@ -21,8 +23,7 @@ public class AllComponents implements AllRegistries {
         ComponentType<EntityStore, RuneManaComponent> magicComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RuneManaComponent.class, "Elemental_Magic", RuneManaComponent.CODEC);
         RuneManaComponent.setComponentType(magicComponentType);
 
-        ComponentType<EntityStore, KnownRuneSpellsComponent> runeKnownSpellsComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(KnownRuneSpellsComponent.class, "Rune_Known_Spells", KnownRuneSpellsComponent.CODEC);
-        KnownRuneSpellsComponent.setComponentType(runeKnownSpellsComponentType);
+        AllRegistries.registerComponent(KnownRuneSpellsComponent::new);
 
 //        ComponentType<EntityStore, AccelerateComponent> modifyVelocityComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(AccelerateComponent.class, AccelerateComponent::new);
 //        AccelerateComponent.setComponentType(modifyVelocityComponentType);
@@ -30,8 +31,10 @@ public class AllComponents implements AllRegistries {
         ComponentType<EntityStore, PhysicsBlockComponent> psudoBlockComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(PhysicsBlockComponent.class, "Standing_Rune_Breeze", PhysicsBlockComponent.CODEC);
         PhysicsBlockComponent.setComponentType(psudoBlockComponentType);
 
+        AllRegistries.registerComponent(ItemKeyComponent::new);
         ComponentType<ChunkStore, StandingRuneBreezeComponent> breezeStandingRuneComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(StandingRuneBreezeComponent.class, "Standing_Rune_Breeze", StandingRuneBreezeComponent.CODEC);
         StandingRuneBreezeComponent.setComponentType(breezeStandingRuneComponentType);
+
 
         ComponentType<ChunkStore, FirstRunComponent> firstRunComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(FirstRunComponent.class, "First_Run", FirstRunComponent.CODEC);
         FirstRunComponent.setComponentType(firstRunComponentType);
@@ -39,8 +42,9 @@ public class AllComponents implements AllRegistries {
         ComponentType<ChunkStore, BlockNeighbourNotifierComponent> blockNeighbourNotifierComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(BlockNeighbourNotifierComponent.class, "Block_Neighbour_Notifier", BlockNeighbourNotifierComponent.CODEC);
         BlockNeighbourNotifierComponent.setComponentType(blockNeighbourNotifierComponentType);
 
+        ComponentType<ChunkStore, LockableBlockComponent> lockableBlockComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(LockableBlockComponent.class, "Lockable_Block", LockableBlockComponent.CODEC);
+        LockableBlockComponent.setComponentType(lockableBlockComponentType);
 
-        ComponentType<ChunkStore, BlockAnimtionComponent> blockAnimationComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(BlockAnimtionComponent.class, "Block_Animation", BlockAnimtionComponent.CODEC);
-        BlockAnimtionComponent.setComponentType(blockAnimationComponentType);
+        AllRegistries.registerComponent(BlockAnimtionComponent::new);
     }
 }

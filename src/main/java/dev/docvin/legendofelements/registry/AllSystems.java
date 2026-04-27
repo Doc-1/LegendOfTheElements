@@ -1,11 +1,11 @@
 package dev.docvin.legendofelements.registry;
 
-import dev.docvin.legendofelements.block.blocks.puzzle.sliding.SlidingBlockInit;
-import dev.docvin.legendofelements.block.blocks.puzzle.sliding.SlidingBlockSystem;
-import dev.docvin.legendofelements.block.blocks.standingrunes.breeze.StandingRuneBreezeInit;
-import dev.docvin.legendofelements.block.blocks.standingrunes.breeze.StandingRuneBreezeSystem;
-import dev.docvin.legendofelements.entity.entities.EnsurePhysicsBlockComponents;
-import dev.docvin.legendofelements.entity.entities.PhysicsBlockEntitySystem;
+import dev.docvin.legendofelements.chunk.blocks.entities.SlidingBlockInit;
+import dev.docvin.legendofelements.chunk.blocks.entities.StandingRuneBreezeInit;
+import dev.docvin.legendofelements.chunk.blocks.systems.SlidingBlockSystem;
+import dev.docvin.legendofelements.chunk.blocks.systems.StandingRuneBreezeSystem;
+import dev.docvin.legendofelements.entity.entities.holders.PhysicsBlockEntityInit;
+import dev.docvin.legendofelements.entity.entities.systems.PhysicsBlockEntitySystem;
 import dev.docvin.legendofelements.event.events.entity.BlockBreakNotifySystem;
 import dev.docvin.legendofelements.rune.systems.RuneManaRegenSystem;
 import dev.docvin.legendofelements.rune.systems.RuneSpellCastingSystem;
@@ -16,7 +16,7 @@ public class AllSystems implements AllRegistries {
         AllRegistries.getEntityStoreRegistry().registerSystem(new RuneManaRegenSystem());
         AllRegistries.getEntityStoreRegistry().registerSystem(new RuneSpellCastingSystem());
         AllRegistries.getEntityStoreRegistry().registerSystem(new PhysicsBlockEntitySystem());
-        AllRegistries.getEntityStoreRegistry().registerSystem(new EnsurePhysicsBlockComponents());
+        AllRegistries.getEntityStoreRegistry().registerSystem(new PhysicsBlockEntityInit());
 
         AllRegistries.getEntityStoreRegistry().registerSystem(new BlockBreakNotifySystem());
 
