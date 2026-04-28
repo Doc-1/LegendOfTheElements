@@ -9,8 +9,8 @@ import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.docvin.legendofelements.rune.components.RuneManaComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
+import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
 
 import javax.annotation.Nonnull;
 
@@ -20,12 +20,12 @@ import javax.annotation.Nonnull;
 public class RuneManaRegenSystem extends EntityTickingSystem<EntityStore> {
 
 
-    private static final Query<EntityStore> QUERY = Query.and(RuneManaRegenComponent.getComponentType(), RuneManaComponent.getComponentType());
+    private static final Query<EntityStore> QUERY = Query.and(RuneManaRegenComponent.getComponentType(), RunicSystemComponent.getComponentType());
 
     @Override
     public void tick(float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
         RuneManaRegenComponent magicRegenComponent = archetypeChunk.getComponent(index, RuneManaRegenComponent.getComponentType());
-        RuneManaComponent magicComponent = archetypeChunk.getComponent(index, RuneManaComponent.getComponentType());
+        RunicSystemComponent magicComponent = archetypeChunk.getComponent(index, RunicSystemComponent.getComponentType());
 
         assert magicRegenComponent != null;
         assert magicComponent != null;

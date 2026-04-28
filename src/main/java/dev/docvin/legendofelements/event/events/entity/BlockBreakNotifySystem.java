@@ -6,7 +6,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
@@ -30,7 +29,7 @@ public class BlockBreakNotifySystem extends EntityEventSystem<EntityStore, Break
         Ref<EntityStore> ref = archetype.getReferenceTo(i);
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player != null) {
-            player.sendMessage(Message.raw("You broke: " + event.getBlockType().getId()));
+            // player.sendMessage(Message.raw("You broke: " + event.getBlockType().getId()));
         }
     }
 

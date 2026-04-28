@@ -3,15 +3,15 @@ package dev.docvin.legendofelements.chunk.blocks.components;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.math.shape.Box;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import dev.docvin.legendofelements.registry.data.Component;
 
 import javax.annotation.Nullable;
 
-public class StandingRuneBreezeComponent implements Component<ChunkStore> {
+public class StandingRuneBreezeComponent implements Component<StandingRuneBreezeComponent, ChunkStore> {
     public static final BuilderCodec<StandingRuneBreezeComponent> CODEC = BuilderCodec.builder(StandingRuneBreezeComponent.class, StandingRuneBreezeComponent::new)
             .append(new KeyedCodec<>("Speed_Modifier", Codec.FLOAT), (c, v) -> c.modifier = v, c -> c.modifier)
             .add()
@@ -36,8 +36,9 @@ public class StandingRuneBreezeComponent implements Component<ChunkStore> {
         return componentType;
     }
 
-    public static void setComponentType(ComponentType<ChunkStore, StandingRuneBreezeComponent> componentType) {
-        StandingRuneBreezeComponent.componentType = componentType;
+    @Override
+    public void setComponentType(ComponentType<ChunkStore, StandingRuneBreezeComponent> staticComponentType) {
+        componentType = staticComponentType;
     }
 
     public float getModifier() {
@@ -72,8 +73,14 @@ public class StandingRuneBreezeComponent implements Component<ChunkStore> {
         this.velocity = velocity;
     }
 
+    @Override
+    public String getComponentId() {
+        return "Standing_Rune_Breeze";
+    }
+
     @Nullable
-    public Component<ChunkStore> clone() {
+    @Override
+    public com.hypixel.hytale.component.Component<ChunkStore> clone() {
         return new StandingRuneBreezeComponent();
     }
 }

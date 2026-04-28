@@ -8,13 +8,13 @@ import dev.docvin.legendofelements.entity.entities.holders.PhysicsBlockEntityIni
 import dev.docvin.legendofelements.entity.entities.systems.PhysicsBlockEntitySystem;
 import dev.docvin.legendofelements.event.events.entity.BlockBreakNotifySystem;
 import dev.docvin.legendofelements.rune.systems.RuneManaRegenSystem;
-import dev.docvin.legendofelements.rune.systems.RuneSpellCastingSystem;
+import dev.docvin.legendofelements.rune.systems.RunicSpellCastingSystem;
 
 public class AllSystems implements AllRegistries {
 
     public static void register() {
         AllRegistries.getEntityStoreRegistry().registerSystem(new RuneManaRegenSystem());
-        AllRegistries.getEntityStoreRegistry().registerSystem(new RuneSpellCastingSystem());
+        AllRegistries.getEntityStoreRegistry().registerSystem(new RunicSpellCastingSystem());
         AllRegistries.getEntityStoreRegistry().registerSystem(new PhysicsBlockEntitySystem());
         AllRegistries.getEntityStoreRegistry().registerSystem(new PhysicsBlockEntityInit());
 

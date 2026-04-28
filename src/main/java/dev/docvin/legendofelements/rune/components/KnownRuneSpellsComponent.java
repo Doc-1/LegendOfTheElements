@@ -6,7 +6,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.registry.data.Component;
-import dev.docvin.legendofelements.rune.assets.RuneSpellsAsset;
+import dev.docvin.legendofelements.rune.assets.RunicSpell;
 import dev.docvin.legendofelements.rune.exception.AlreadyKnowsRuneSpellException;
 
 import javax.annotation.Nullable;
@@ -40,7 +40,7 @@ public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsCompon
         return "";
     }
 
-    public void learnRuneSpell(RuneSpellsAsset spell) throws AlreadyKnowsRuneSpellException {
+    public void learnRuneSpell(RunicSpell spell) throws AlreadyKnowsRuneSpellException {
         List<String> list = knownSpells == null ? new ArrayList<>() : new ArrayList<>(List.of(knownSpells));
         if (!knowsRuneSpell(spell)) {
             list.add(spell.getName());
@@ -49,7 +49,7 @@ public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsCompon
             throw new AlreadyKnowsRuneSpellException(spell);
     }
 
-    public boolean knowsRuneSpell(RuneSpellsAsset spell) {
+    public boolean knowsRuneSpell(RunicSpell spell) {
         if (knownSpells == null)
             return false;
         for (String name : knownSpells)

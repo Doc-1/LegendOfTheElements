@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 /**
  * A component for player entities that upon added will cause the player to regain mana stored in
- * {@link RuneManaComponent}
+ * {@link RunicSystemComponent}
  */
 public class RuneManaRegenComponent implements Component<EntityStore> {
 

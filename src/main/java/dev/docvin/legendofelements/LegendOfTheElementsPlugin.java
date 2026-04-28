@@ -1,7 +1,10 @@
 package dev.docvin.legendofelements;
 
+import com.hypixel.hytale.assetstore.AssetRegistry;
+import com.hypixel.hytale.assetstore.map.IndexedLookupTableAssetMap;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.shape.Box;
+import com.hypixel.hytale.server.core.asset.HytaleAssetStore;
 import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
 import com.hypixel.hytale.server.core.asset.type.model.config.camera.CameraAxis;
 import com.hypixel.hytale.server.core.asset.type.model.config.camera.CameraSettings;
@@ -11,6 +14,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import dev.docvin.legendofelements.commands.SpawnItemKey;
 import dev.docvin.legendofelements.commands.SpawnItemLock;
 import dev.docvin.legendofelements.registry.*;
+import dev.docvin.legendofelements.rune.assets.RunicSpell;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
@@ -23,6 +27,8 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static LegendOfTheElementsPlugin instance;
+    private final String notEnabledString = "The plugin " + this.getIdentifier() + " is not enabled!";
+
     private PacketFilter filter;
 
     public LegendOfTheElementsPlugin(@Nonnull JavaPluginInit init) {
@@ -83,20 +89,25 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
 
         List<ModelAsset> modelAssetList = getModelAssets();
         ModelAsset.getAssetStore().loadAssets(LegendOfTheElementsPlugin.get().getName(), modelAssetList);
-
+        AssetRegistry.register(HytaleAssetStore.builder(RunicSpell.class, new IndexedLookupTableAssetMap<>(RunicSpell[]::new))
+                .setPath("Runes")
+                .setCodec(RunicSpell.CODEC)
+                .setKeyFunction(RunicSpell::getId)
+                .setReplaceOnRemove(RunicSpell::getRunicSpellFor)
+                .build());
+        AllRuneSpells.register();
 
     }
-
 
     @Override
     protected void start() {
     }
-
 
     @Override
     protected void shutdown() {
         LOGGER.atInfo().log("Shutting down plugin " + this.getName());
         //PacketAdapters.deregisterInbound(filter);
     }
+
 
 }

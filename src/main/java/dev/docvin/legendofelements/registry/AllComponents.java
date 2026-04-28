@@ -11,8 +11,8 @@ import dev.docvin.legendofelements.chunk.components.FirstRunComponent;
 import dev.docvin.legendofelements.entity.entities.components.PhysicsBlockComponent;
 import dev.docvin.legendofelements.items.ItemKeyComponent;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
-import dev.docvin.legendofelements.rune.components.RuneManaComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
+import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
 
 public class AllComponents implements AllRegistries {
 
@@ -20,8 +20,8 @@ public class AllComponents implements AllRegistries {
         ComponentType<EntityStore, RuneManaRegenComponent> magicRegenComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RuneManaRegenComponent.class, "Elemental_Magic_Regen", RuneManaRegenComponent.CODEC);
         RuneManaRegenComponent.setComponentType(magicRegenComponentType);
 
-        ComponentType<EntityStore, RuneManaComponent> magicComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RuneManaComponent.class, "Elemental_Magic", RuneManaComponent.CODEC);
-        RuneManaComponent.setComponentType(magicComponentType);
+        ComponentType<EntityStore, RunicSystemComponent> magicComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RunicSystemComponent.class, "Elemental_Magic", RunicSystemComponent.CODEC);
+        RunicSystemComponent.setComponentType(magicComponentType);
 
         AllRegistries.registerComponent(KnownRuneSpellsComponent::new);
 
@@ -32,9 +32,7 @@ public class AllComponents implements AllRegistries {
         PhysicsBlockComponent.setComponentType(psudoBlockComponentType);
 
         AllRegistries.registerComponent(ItemKeyComponent::new);
-        ComponentType<ChunkStore, StandingRuneBreezeComponent> breezeStandingRuneComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(StandingRuneBreezeComponent.class, "Standing_Rune_Breeze", StandingRuneBreezeComponent.CODEC);
-        StandingRuneBreezeComponent.setComponentType(breezeStandingRuneComponentType);
-
+        AllRegistries.registerComponent(StandingRuneBreezeComponent::new);
 
         ComponentType<ChunkStore, FirstRunComponent> firstRunComponentType = AllRegistries.getChunkStoreRegistry().registerComponent(FirstRunComponent.class, "First_Run", FirstRunComponent.CODEC);
         FirstRunComponent.setComponentType(firstRunComponentType);

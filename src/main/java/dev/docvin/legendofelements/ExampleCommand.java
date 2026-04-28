@@ -11,8 +11,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
-import dev.docvin.legendofelements.rune.components.RuneManaComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
+import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +32,7 @@ public class ExampleCommand extends AbstractPlayerCommand {
         Player player = store.getComponent(ref, Player.getComponentType());
         RuneManaRegenComponent magic = new RuneManaRegenComponent();
         store.putComponent(ref, RuneManaRegenComponent.getComponentType(), magic);
-        store.putComponent(ref, RuneManaComponent.getComponentType(), new RuneManaComponent());
+        store.putComponent(ref, RunicSystemComponent.getComponentType(), new RunicSystemComponent());
         store.putComponent(ref, KnownRuneSpellsComponent.getComponentType(), new KnownRuneSpellsComponent());
         assert player != null;
         //Objects.requireNonNull(ref.getStore().getComponent(ref, RuneKnownSpellsComponent.getComponentType())).learnRuneSpell(RuneSpellManager.get().getRuneSpell("Updraft"));

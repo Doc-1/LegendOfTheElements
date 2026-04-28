@@ -40,6 +40,7 @@ import dev.docvin.legendofelements.registry.data.IRegistryDataInteractions;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+//todo have class extend Door Interaction class rather than making a copy of it.
 public class LockableDoorInteraction extends SimpleBlockInteraction implements IRegistryDataInteractions<LockableDoorInteraction> {
 
     private static final String OPEN_DOOR_IN = "OpenDoorIn";

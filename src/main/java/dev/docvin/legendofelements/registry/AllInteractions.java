@@ -5,8 +5,9 @@ import dev.docvin.legendofelements.SendMessageInteraction;
 import dev.docvin.legendofelements.chunk.blocks.interactions.LockableDoorInteraction;
 import dev.docvin.legendofelements.chunk.blocks.interactions.SlideBlockInteraction;
 import dev.docvin.legendofelements.chunk.blocks.interactions.SpawnFallingBlockInteraction;
-import dev.docvin.legendofelements.items.interactions.*;
-import dev.docvin.legendofelements.rune.spells.active.CastUpdraftInteractions;
+import dev.docvin.legendofelements.items.interactions.UseKeyInteraction;
+import dev.docvin.legendofelements.items.interactions.UseLockInteraction;
+import dev.docvin.legendofelements.rune.assets.spells.active.CastUpdraftInteractions;
 
 import java.lang.reflect.InvocationTargetException;
 
