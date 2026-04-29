@@ -6,6 +6,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.rune.assets.RunicSpell;
@@ -33,15 +34,21 @@ public class RunicSpellCastingSystem extends EntityTickingSystem<EntityStore> {
 
         RunicSystemComponent runicSystemComponent = ref.getStore().getComponent(ref, RunicSystemComponent.getComponentType());
         assert runicSystemComponent != null;
-
         //for loop of all known runic spells
         RunicSpell runicSpell = RunicSpell.getAssetMap().getAsset("Updraft");
         if (runicSpell != null) {
-
-            RunicSpell.ResultStatus resultStatus = runicSpell.tick(runicSystemComponent.getTick(), ref);
-            if (resultStatus.equals(RunicSpell.ResultStatus.TICK))
+            if (!runicSystemComponent.isCasting()) {
+                runicSystemComponent.resetTick();
+                runicSystemComponent.setCasting(runicSpell.shouldCast(ref.getStore(), ref));
+            }
+            player.sendMessage(Message.raw("" + runicSystemComponent.getTick()));
+            if (runicSystemComponent.isCasting()) {
                 runicSystemComponent.tick(delta);
-
+                runicSpell.tick(ref, runicSystemComponent.getTick());
+                if (runicSpell.hasCasted()) {
+                    runicSystemComponent.setCasting(false);
+                }
+            }
         }
     }
 

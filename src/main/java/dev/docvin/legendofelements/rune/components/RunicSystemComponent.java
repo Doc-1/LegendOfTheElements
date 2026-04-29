@@ -22,15 +22,13 @@ public class RunicSystemComponent implements Component<EntityStore> {
             .add()
             .append(new KeyedCodec<>("Tick", Codec.FLOAT), (c, v) -> c.tick = v, c -> c.tick)
             .add()
-            .append(new KeyedCodec<>("Casting", Codec.BOOLEAN), (c, v) -> c.casting = v, c -> c.casting)
-            .add()
             .build();
 
 
     private static ComponentType<EntityStore, RunicSystemComponent> type;
     private int maxMagic;
     private int currentMagic;
-    private boolean casting;
+    private boolean casting = false;
     private float tick;
 
     public RunicSystemComponent() {
@@ -48,6 +46,14 @@ public class RunicSystemComponent implements Component<EntityStore> {
 
     public static void setComponentType(ComponentType<EntityStore, RunicSystemComponent> componentType) {
         type = componentType;
+    }
+
+    public boolean isCasting() {
+        return casting;
+    }
+
+    public void setCasting(boolean casting) {
+        this.casting = casting;
     }
 
     public int getCurrentMagic() {

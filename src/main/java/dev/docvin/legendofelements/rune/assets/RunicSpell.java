@@ -12,6 +12,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.EnumCodec;
 import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
@@ -74,12 +75,16 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
             }
 
             @Override
-            protected ResultStatus performanceToCast(Ref<EntityStore> ref, float delta) {
-                return ResultStatus.PASS;
+            public boolean performanceToCast(Ref<EntityStore> ref, float tick) {
+                return false;
+            }
+
+            @Override
+            public boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref) {
+                return false;
             }
         };
     }
-
 
     public static AssetStore<String, RunicSpell, IndexedLookupTableAssetMap<String, RunicSpell>> getAssetStore() {
         if (ASSET_STORE == null) {
@@ -92,19 +97,19 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
         return getAssetStore().getAssetMap();
     }
 
-    public ResultStatus tick(float tick, Ref<EntityStore> ref) {
-        if (tick == 0)
-            this.casted = false;
+    public boolean hasCasted() {
+        return casted;
+    }
 
-        if (!this.casted) {
-            ResultStatus results = performanceToCast(ref, tick);
-            if (results.equals(ResultStatus.SUCCESS)) {
-                castSpell(ref);
-                this.casted = true;
-            }
-            return results;
-        }
-        return ResultStatus.PASS;
+    public void tick(Ref<EntityStore> ref, float tick) {
+        if (tick <= 0.1)
+            this.casted = false;
+        float castDelay = 0.5F;
+        if (tick <= castDelay && !this.casted) {
+            if (this.performanceToCast(ref, tick))
+                this.casted = this.castSpell(ref);
+        } else
+            this.casted = true;
     }
 
     public abstract boolean castSpell(Ref<EntityStore> ref);
@@ -113,10 +118,12 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
      * Contains the logic for defining the actions the player is to take in order to 'cast' the spell.
      *
      * @param ref
-     * @param delta
+     * @param tick
      * @return
      */
-    protected abstract ResultStatus performanceToCast(Ref<EntityStore> ref, float delta);
+    public abstract boolean performanceToCast(Ref<EntityStore> ref, float tick);
+
+    public abstract boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref);
 
     @Override
     public String getId() {

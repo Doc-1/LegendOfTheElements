@@ -25,12 +25,7 @@ public class UpdraftRunicSpell extends RunicSpell {
         Store<EntityStore> store = ref.getStore();
 
         Velocity velocityComponent = store.getComponent(ref, Velocity.getComponentType());
-        TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());
-        if (velocityComponent == null || transformComponent == null)
-            return true;
-
-        if (velocityComponent.getVelocity().y < -8)
-            return true;
+        assert velocityComponent != null;
 
         Vector3d velocity = velocityComponent.getVelocity().clone().normalize();
         velocity.addScaled(new Vector3d(3, 4, 3), 5);
@@ -39,18 +34,30 @@ public class UpdraftRunicSpell extends RunicSpell {
     }
 
     @Override
-    protected ResultStatus performanceToCast(Ref<EntityStore> ref, float tick) {
+    public boolean performanceToCast(Ref<EntityStore> ref, float tick) {
         Store<EntityStore> store = ref.getStore();
         MovementStatesComponent movementStatesComponent = store.getComponent(ref, MovementStatesComponent.getComponentType());
         assert movementStatesComponent != null;
         MovementStates states = movementStatesComponent.getMovementStates();
-        float castDelay = 0.2F;
-        if (states.crouching && !states.flying && !states.onGround)
-            return ResultStatus.TICK;
-        else if (!states.crouching && !states.onGround && !states.flying && tick <= castDelay)
-            return ResultStatus.SUCCESS;
-        else
-            return ResultStatus.FAILURE;
+
+        return !states.crouching;
+    }
+
+    @Override
+    public boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref) {
+        MovementStatesComponent movementStatesComponent = store.getComponent(ref, MovementStatesComponent.getComponentType());
+        assert movementStatesComponent != null;
+        MovementStates states = movementStatesComponent.getMovementStates();
+
+        Velocity velocityComponent = store.getComponent(ref, Velocity.getComponentType());
+        TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());
+        if (velocityComponent == null || transformComponent == null)
+            return false;
+
+        if (velocityComponent.getVelocity().y < -8)
+            return false;
+
+        return states.crouching && !states.flying && !states.onGround;
     }
 
 
