@@ -1,22 +1,21 @@
 {
-    "Group": "Docvin",
-    "Name": "LegendOfTheElementsPlugin",
-    "Version": "0.0.3",
-    "Description": "An example plugin for HyTale!",
-    "Authors": [
-        {
-            "Name": "Docvin"
-        }
-    ],
-    "ServerVersion": "2026.03.*",
-    "Dependencies": {
-        "Hytale:EntityModule": "*",
-        "Hytale:BlockModule": "*"
-    },
-    "OptionalDependencies": {
-        
-    },
-    "DisabledByDefault": false,
-    "Main": "dev.docvin.legendofelements.LegendOfTheElementsPlugin",
-    "IncludesAssetPack": true
+  "Group": "Docvin",
+  "Name": "LegendOfTheElementsPlugin",
+  "Version": "0.0.4",
+  "Description": "Work in progress mod with the goal to create a story, new gameplay mechanics, and unique places and characters to visit.",
+  "Authors": [
+    {
+      "Name": "Docvin"
+    }
+  ],
+  "ServerVersion": "2026.03.*",
+  "Dependencies": {
+    "Hytale:EntityModule": "*",
+    "Hytale:BlockModule": "*"
+  },
+  "OptionalDependencies": {
+  },
+  "DisabledByDefault": false,
+  "Main": "dev.docvin.legendofelements.LegendOfTheElementsPlugin",
+  "IncludesAssetPack": true
 }
