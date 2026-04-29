@@ -28,7 +28,7 @@ public class UpdraftRunicSpell extends RunicSpell {
         assert velocityComponent != null;
 
         Vector3d velocity = velocityComponent.getVelocity().clone().normalize();
-        velocity.addScaled(new Vector3d(3, 4, 3), 5);
+        velocity.addScaled(new Vector3d(0, 4, 0), 3);
         velocityComponent.addInstruction(velocity, null, ChangeVelocityType.Add);
         return true;
     }
@@ -40,7 +40,7 @@ public class UpdraftRunicSpell extends RunicSpell {
         assert movementStatesComponent != null;
         MovementStates states = movementStatesComponent.getMovementStates();
 
-        return !states.crouching;
+        return !states.crouching && !states.flying && !states.onGround;
     }
 
     @Override

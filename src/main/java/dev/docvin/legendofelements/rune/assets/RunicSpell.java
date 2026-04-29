@@ -104,10 +104,11 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
     public void tick(Ref<EntityStore> ref, float tick) {
         if (tick <= 0.1)
             this.casted = false;
-        float castDelay = 0.5F;
+        float castDelay = 0.25F;
         if (tick <= castDelay && !this.casted) {
             if (this.performanceToCast(ref, tick))
                 this.casted = this.castSpell(ref);
+
         } else
             this.casted = true;
     }
