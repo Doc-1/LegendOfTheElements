@@ -7,7 +7,6 @@ import dev.docvin.legendofelements.chunk.blocks.interactions.SlideBlockInteracti
 import dev.docvin.legendofelements.chunk.blocks.interactions.SpawnFallingBlockInteraction;
 import dev.docvin.legendofelements.items.interactions.UseKeyInteraction;
 import dev.docvin.legendofelements.items.interactions.UseLockInteraction;
-import dev.docvin.legendofelements.rune.assets.spells.active.CastUpdraftInteractions;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -15,8 +14,6 @@ public class AllInteractions implements AllRegistries {
 
     public static void registerInteractions() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         AllRegistries.getCodecRegistry(Interaction.CODEC).register("my_custom_interaction_id", SendMessageInteraction.class, SendMessageInteraction.CODEC);
-        AllRegistries.getCodecRegistry(Interaction.CODEC).register("Cast_Updraft_0", CastUpdraftInteractions.CastUpdraftFirst.class, CastUpdraftInteractions.CastUpdraftFirst.CODEC);
-        //AllRegistries.getCodecRegistry(Interaction.CODEC).register("Cast_Updraft_1", CastUpdraftInteractions.CastUpdraftSecond.class, CastUpdraftInteractions.CastUpdraftSecond.CODEC);
         AllRegistries.getCodecRegistry(Interaction.CODEC).register("Slide_Block_Interaction", SlideBlockInteraction.class, SlideBlockInteraction.CODEC);
         AllRegistries.getCodecRegistry(Interaction.CODEC).register("Spawn_Falling_Block_Interaction", SpawnFallingBlockInteraction.class, SpawnFallingBlockInteraction.CODEC);
 

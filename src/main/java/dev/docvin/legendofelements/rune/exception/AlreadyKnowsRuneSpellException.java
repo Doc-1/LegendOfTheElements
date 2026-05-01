@@ -5,7 +5,7 @@ import dev.docvin.legendofelements.rune.assets.RunicSpell;
 public class AlreadyKnowsRuneSpellException extends RuntimeException {
 
     public AlreadyKnowsRuneSpellException(RunicSpell runeSpell) {
-        super("The rune spell " + runeSpell.getName() + " is already known!");
+        super("The rune spell " + runeSpell.getSpellName() + " is already known!");
     }
 
 }

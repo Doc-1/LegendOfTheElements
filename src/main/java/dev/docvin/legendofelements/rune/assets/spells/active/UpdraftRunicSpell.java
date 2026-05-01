@@ -13,7 +13,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.rune.assets.RunicSpell;
 
 public class UpdraftRunicSpell extends RunicSpell {
-    public static final BuilderCodec<UpdraftRunicSpell> CODEC = BuilderCodec.builder(UpdraftRunicSpell.class, UpdraftRunicSpell::new, RunicSpell.SIMPLE_CODEC)
+    public static final BuilderCodec<UpdraftRunicSpell> CODEC = BuilderCodec.builder(UpdraftRunicSpell.class, UpdraftRunicSpell::new, RunicSpell.SPELL_CODEC)
             .build();
 
     public UpdraftRunicSpell() {

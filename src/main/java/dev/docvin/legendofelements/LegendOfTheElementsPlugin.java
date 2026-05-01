@@ -78,6 +78,13 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
         AllAssets.register();
+        AssetRegistry.register(HytaleAssetStore.builder(RunicSpell.class, new IndexedLookupTableAssetMap<>(RunicSpell[]::new))
+                .setPath("Runes")
+                .setCodec(RunicSpell.CODEC)
+                .setKeyFunction(RunicSpell::getId)
+                .setReplaceOnRemove(RunicSpell::new)
+                .build());
+        AllRuneSpells.register();
 
         AllEvents.register();
 
@@ -89,13 +96,6 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
 
         List<ModelAsset> modelAssetList = getModelAssets();
         ModelAsset.getAssetStore().loadAssets(LegendOfTheElementsPlugin.get().getName(), modelAssetList);
-        AssetRegistry.register(HytaleAssetStore.builder(RunicSpell.class, new IndexedLookupTableAssetMap<>(RunicSpell[]::new))
-                .setPath("Runes")
-                .setCodec(RunicSpell.CODEC)
-                .setKeyFunction(RunicSpell::getId)
-                .setReplaceOnRemove(RunicSpell::getRunicSpellFor)
-                .build());
-        AllRuneSpells.register();
 
     }
 

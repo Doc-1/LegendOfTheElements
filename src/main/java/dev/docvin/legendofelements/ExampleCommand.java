@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.docvin.legendofelements.rune.assets.spells.active.UpdraftRunicSpell;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
 import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
@@ -33,7 +34,9 @@ public class ExampleCommand extends AbstractPlayerCommand {
         RuneManaRegenComponent magic = new RuneManaRegenComponent();
         store.putComponent(ref, RuneManaRegenComponent.getComponentType(), magic);
         store.putComponent(ref, RunicSystemComponent.getComponentType(), new RunicSystemComponent());
-        store.putComponent(ref, KnownRuneSpellsComponent.getComponentType(), new KnownRuneSpellsComponent());
+        KnownRuneSpellsComponent knownRuneSpellsComponent = new KnownRuneSpellsComponent();
+        knownRuneSpellsComponent.learnRunicSpell(new UpdraftRunicSpell());
+        store.putComponent(ref, KnownRuneSpellsComponent.getComponentType(), knownRuneSpellsComponent);
         assert player != null;
         //Objects.requireNonNull(ref.getStore().getComponent(ref, RuneKnownSpellsComponent.getComponentType())).learnRuneSpell(RuneSpellManager.get().getRuneSpell("Updraft"));
         player.sendMessage(Message.raw("You have Elemental Magic Now!").color("Green").bold(true));

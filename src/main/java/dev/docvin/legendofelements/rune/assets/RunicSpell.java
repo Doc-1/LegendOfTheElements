@@ -4,6 +4,7 @@ import com.hypixel.hytale.assetstore.AssetExtraInfo;
 import com.hypixel.hytale.assetstore.AssetRegistry;
 import com.hypixel.hytale.assetstore.AssetStore;
 import com.hypixel.hytale.assetstore.codec.AssetCodecMapCodec;
+import com.hypixel.hytale.assetstore.codec.ContainedAssetCodec;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import com.hypixel.hytale.assetstore.map.IndexedLookupTableAssetMap;
 import com.hypixel.hytale.assetstore.map.JsonAssetWithMap;
@@ -11,6 +12,7 @@ import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.EnumCodec;
+import com.hypixel.hytale.codec.codecs.array.ArrayCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -23,15 +25,19 @@ import javax.annotation.Nonnull;
  * but only for controlling the logic of rune spells.
  */
 //todo create a Codec for RunicSpell to assign them to individual players.
-public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, RunicSpell>> {
+public class RunicSpell implements JsonAssetWithMap<String, IndexedLookupTableAssetMap<String, RunicSpell>> {
 
     public static final AssetCodecMapCodec<String, RunicSpell> CODEC = new AssetCodecMapCodec<>(
             Codec.STRING, (t, k) -> t.id = k, t -> t.id, (t, data) -> t.data = data, t -> t.data
     );
+
+
     @Nonnull
-    public static final BuilderCodec<RunicSpell> SIMPLE_CODEC = BuilderCodec.abstractBuilder(RunicSpell.class)
+    public static final Codec<String> CHILD_ASSET_CODEC = new ContainedAssetCodec<>(RunicSpell.class, CODEC);
+    @Nonnull
+    public static final BuilderCodec<RunicSpell> SPELL_CODEC = BuilderCodec.builder(RunicSpell.class, RunicSpell::new)
             .append(new KeyedCodec<>("SpellName", Codec.STRING),
-                    (c, v) -> c.name = v, c -> c.name)
+                    (c, v) -> c.spellName = v, c -> c.spellName)
             .add()
             .append(new KeyedCodec<>("ElementType", new EnumCodec<>(RuneElementType.class).documentKey(RuneElementType.WIND, "Wind Element")), RunicSpell::setElementType, c -> c.elementType)
             .add()
@@ -39,16 +45,17 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
             .add()
             .append(new KeyedCodec<>("CastDelay", Codec.FLOAT), (c, v) -> c.castDelay = v, c -> c.castDelay)
             .add()
-            .append(new KeyedCodec<>("LifeTime", Codec.FLOAT), (c, v) -> c.lifeTime = v, c -> c.lifeTime)
-            .add()
             .append(new KeyedCodec<>("RecastDelay", Codec.FLOAT), (c, v) -> c.recastDelay = v, c -> c.recastDelay)
             .add()
             .append(new KeyedCodec<>("ConstantCast", Codec.BOOLEAN), (c, v) -> c.constantCast = v, c -> c.constantCast)
             .add()
+            .append(new KeyedCodec<>("LifeTime", Codec.FLOAT), (c, v) -> c.lifeTime = v, c -> c.lifeTime)
+            .add()
             .build();
+    @Nonnull
+    public static final Codec<RunicSpell[]> ARRAY_CODEC = new ArrayCodec<>(SPELL_CODEC, RunicSpell[]::new);
     private static AssetStore<String, RunicSpell, IndexedLookupTableAssetMap<String, RunicSpell>> ASSET_STORE;
-    private String name;
-    private String elementTypeName;
+    private String spellName;
     private RuneElementType elementType;
     private int castCost;
     private float castDelay;
@@ -59,31 +66,21 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
     private boolean casted;
     private float lifeTime;
 
+    public RunicSpell() {
+    }
+
     public RunicSpell(String id) {
         this.id = id;
     }
 
-    public RunicSpell() {
-
-    }
-
-    public static RunicSpell getRunicSpellFor(String id) {
-        return new RunicSpell(id) {
-            @Override
-            public boolean castSpell(Ref<EntityStore> ref) {
-                return false;
-            }
-
-            @Override
-            public boolean performanceToCast(Ref<EntityStore> ref, float tick) {
-                return false;
-            }
-
-            @Override
-            public boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref) {
-                return false;
-            }
-        };
+    public RunicSpell(String spellName, RuneElementType elementType, int castCost, float castDelay, float recastDelay, boolean constantCast, float lifeTime) {
+        this.spellName = spellName;
+        this.elementType = elementType;
+        this.castCost = castCost;
+        this.castDelay = castDelay;
+        this.recastDelay = recastDelay;
+        this.constantCast = constantCast;
+        this.lifeTime = lifeTime;
     }
 
     public static AssetStore<String, RunicSpell, IndexedLookupTableAssetMap<String, RunicSpell>> getAssetStore() {
@@ -102,7 +99,7 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
     }
 
     public void tick(Ref<EntityStore> ref, float tick) {
-        if (tick <= 0.1)
+        if (tick <= 0.1F)
             this.casted = false;
         float castDelay = 0.25F;
         if (tick <= castDelay && !this.casted) {
@@ -113,7 +110,9 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
             this.casted = true;
     }
 
-    public abstract boolean castSpell(Ref<EntityStore> ref);
+    public boolean castSpell(Ref<EntityStore> ref) {
+        return false;
+    }
 
     /**
      * Contains the logic for defining the actions the player is to take in order to 'cast' the spell.
@@ -122,35 +121,33 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
      * @param tick
      * @return
      */
-    public abstract boolean performanceToCast(Ref<EntityStore> ref, float tick);
+    public boolean performanceToCast(Ref<EntityStore> ref, float tick) {
+        return false;
+    }
 
-    public abstract boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref);
+    public boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref) {
+        return false;
+    }
 
     @Override
     public String getId() {
         return id;
     }
 
-    private String getElementTypeName() {
-        return elementTypeName;
-    }
-
     public RuneElementType getElementType() {
         return elementType;
     }
 
-    private void setElementType(String s) {
-        for (RuneElementType runeElementType : RuneElementType.values()) {
-            if (runeElementType.getTypeName().equals(s)) {
-                elementTypeName = s;
-                elementType = runeElementType;
-                break;
-            }
-        }
-    }
-
     public void setElementType(RuneElementType elementType) {
         this.elementType = elementType;
+    }
+
+    public float getLifeTime() {
+        return lifeTime;
+    }
+
+    public void setLifeTime(float lifeTime) {
+        this.lifeTime = lifeTime;
     }
 
     public float getCastDelay() {
@@ -177,12 +174,12 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
         this.constantCast = constantCast;
     }
 
-    public String getName() {
-        return name;
+    public String getSpellName() {
+        return spellName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSpellName(String spellName) {
+        this.spellName = spellName;
     }
 
     public int getCastCost() {
@@ -196,6 +193,7 @@ public abstract class RunicSpell implements JsonAssetWithMap<String, IndexedLook
     private void setCastCost(Integer castCost) {
         this.castCost = Math.max(0, castCost);
     }
+
 
     public enum ResultStatus {
         SUCCESS(""),
