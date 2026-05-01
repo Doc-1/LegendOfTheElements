@@ -33,24 +33,36 @@ public class RunicSpellCastingSystem extends EntityTickingSystem<EntityStore> {
 
         RunicSystemComponent runicSystemComponent = ref.getStore().getComponent(ref, RunicSystemComponent.getComponentType());
         assert runicSystemComponent != null;
-        for (RunicSpell runicSpell : knownSpellsComponent.getKnownSpells()) {
-            if (runicSpell != null) {
-                if (!runicSystemComponent.isCasting()) {
-                    runicSystemComponent.resetTick();
-                    runicSystemComponent.setCasting(runicSpell.shouldCast(ref.getStore(), ref));
-                }
+        int currentSpell = runicSystemComponent.getCurrentSpellCasting();
+        if (currentSpell == -1) {
+            int i = 0;
+            for (RunicSpell runicSpell : knownSpellsComponent.getKnownSpells()) {
+                tryCast(delta, ref, runicSpell, runicSystemComponent, i);
+                i++;
+            }
+        } else
+            tryCast(delta, ref, knownSpellsComponent.getKnownSpells()[currentSpell], runicSystemComponent, currentSpell);
+    }
 
-                if (runicSystemComponent.isCasting()) {
-                    runicSystemComponent.tick(delta);
-                    runicSpell.tick(ref, runicSystemComponent.getTick());
-                    if (runicSpell.hasCasted()) {
-                        runicSystemComponent.setCasting(false);
-                    }
+
+    private void tryCast(float delta, Ref<EntityStore> ref, RunicSpell runicSpell, RunicSystemComponent runicSystemComponent, int index) {
+        if (runicSpell != null) {
+            if (!runicSystemComponent.isCasting()) {
+                runicSystemComponent.resetTick();
+                runicSystemComponent.setCasting(runicSpell.shouldCast(ref.getStore(), ref));
+            }
+
+            if (runicSystemComponent.isCasting()) {
+                runicSystemComponent.setCurrentSpellCasting(index);
+                runicSystemComponent.tick(delta);
+                runicSpell.tick(ref, runicSystemComponent.getTick());
+                if (runicSpell.hasCasted()) {
+                    runicSystemComponent.setCurrentSpellCasting(-1);
+                    runicSystemComponent.setCasting(false);
                 }
             }
         }
     }
-
 
     @Nullable
     @Override

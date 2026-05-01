@@ -76,7 +76,9 @@ public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsCompon
     @Nullable
     @Override
     public com.hypixel.hytale.component.Component<EntityStore> clone() {
-        return null;
+        KnownRuneSpellsComponent knownRuneSpellsComponent = new KnownRuneSpellsComponent();
+        knownRuneSpellsComponent.spells = this.spells;
+        return knownRuneSpellsComponent;
     }
 
 

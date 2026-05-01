@@ -30,6 +30,7 @@ public class RunicSystemComponent implements Component<EntityStore> {
     private int currentMagic;
     private boolean casting = false;
     private float tick;
+    private int currentSpellCasting = -1;
 
     public RunicSystemComponent() {
         this(100, 0);
@@ -46,6 +47,14 @@ public class RunicSystemComponent implements Component<EntityStore> {
 
     public static void setComponentType(ComponentType<EntityStore, RunicSystemComponent> componentType) {
         type = componentType;
+    }
+
+    public int getCurrentSpellCasting() {
+        return currentSpellCasting;
+    }
+
+    public void setCurrentSpellCasting(int currentSpellCasting) {
+        this.currentSpellCasting = currentSpellCasting;
     }
 
     public boolean isCasting() {
