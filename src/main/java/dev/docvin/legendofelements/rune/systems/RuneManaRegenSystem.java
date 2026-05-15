@@ -10,22 +10,25 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
-import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
+import dev.docvin.legendofelements.rune.components.RunicCastingManagmentComponent;
 
 import javax.annotation.Nonnull;
 
 /**
- * System that handles player entities with the {@link RuneManaRegenComponent}
+ * System that handles player entities with the {@link RuneManaRegenComponent}. This component only needs to be set to the player
+ * when the player needs to regen mana. If you attempt to get {@link RuneManaRegenSystem} and it is null then that means the
+ * player's mana is at max.
  */
+//todo make it be used in casting of spells.
 public class RuneManaRegenSystem extends EntityTickingSystem<EntityStore> {
 
 
-    private static final Query<EntityStore> QUERY = Query.and(RuneManaRegenComponent.getComponentType(), RunicSystemComponent.getComponentType());
+    private static final Query<EntityStore> QUERY = Query.and(RuneManaRegenComponent.getComponentType(), RunicCastingManagmentComponent.getComponentType());
 
     @Override
     public void tick(float dt, int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
         RuneManaRegenComponent magicRegenComponent = archetypeChunk.getComponent(index, RuneManaRegenComponent.getComponentType());
-        RunicSystemComponent magicComponent = archetypeChunk.getComponent(index, RunicSystemComponent.getComponentType());
+        RunicCastingManagmentComponent magicComponent = archetypeChunk.getComponent(index, RunicCastingManagmentComponent.getComponentType());
 
         assert magicRegenComponent != null;
         assert magicComponent != null;

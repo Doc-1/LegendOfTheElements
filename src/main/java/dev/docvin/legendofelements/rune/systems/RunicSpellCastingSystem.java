@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.rune.assets.RunicSpell;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
-import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
+import dev.docvin.legendofelements.rune.components.RunicCastingManagmentComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
  */
 public class RunicSpellCastingSystem extends EntityTickingSystem<EntityStore> {
     @Nonnull
-    private static final Query<EntityStore> QUERY = Query.and(RunicSystemComponent.getComponentType(), KnownRuneSpellsComponent.getComponentType());
+    private static final Query<EntityStore> QUERY = Query.and(RunicCastingManagmentComponent.getComponentType(), KnownRuneSpellsComponent.getComponentType());
 
 
     @Override
@@ -31,34 +31,45 @@ public class RunicSpellCastingSystem extends EntityTickingSystem<EntityStore> {
         KnownRuneSpellsComponent knownSpellsComponent = ref.getStore().getComponent(ref, KnownRuneSpellsComponent.getComponentType());
         assert knownSpellsComponent != null;
 
-        RunicSystemComponent runicSystemComponent = ref.getStore().getComponent(ref, RunicSystemComponent.getComponentType());
-        assert runicSystemComponent != null;
-        int currentSpell = runicSystemComponent.getCurrentSpellCasting();
+        RunicCastingManagmentComponent runicCastingManagmentComponent = ref.getStore().getComponent(ref, RunicCastingManagmentComponent.getComponentType());
+        assert runicCastingManagmentComponent != null;
+        int currentSpell = runicCastingManagmentComponent.getCurrentSpellCasting();
         if (currentSpell == -1) {
             int i = 0;
-            for (RunicSpell runicSpell : knownSpellsComponent.getKnownSpells()) {
-                tryCast(delta, ref, runicSpell, runicSystemComponent, i);
+            for (RunicSpell.Data runicSpell : knownSpellsComponent.getKnownSpells()) {
+                tryCast(delta, ref, RunicSpell.getAssetMap().getAsset(runicSpell.getSpellName()), runicCastingManagmentComponent, i);
                 i++;
             }
         } else
-            tryCast(delta, ref, knownSpellsComponent.getKnownSpells()[currentSpell], runicSystemComponent, currentSpell);
+            tryCast(delta, ref, RunicSpell.getAssetMap().getAsset(knownSpellsComponent.getKnownSpells()[currentSpell].getSpellName()), runicCastingManagmentComponent, currentSpell);
     }
 
 
-    private void tryCast(float delta, Ref<EntityStore> ref, RunicSpell runicSpell, RunicSystemComponent runicSystemComponent, int index) {
+    /**
+     * Tests to see if the runicSpell has been activated and then succeeds in completing casting the spell.
+     *
+     * @param delta
+     * @param ref
+     * @param runicSpell
+     * @param runicCastingManagmentComponent
+     * @param index
+     */
+    private void tryCast(float delta, Ref<EntityStore> ref, RunicSpell runicSpell, RunicCastingManagmentComponent runicCastingManagmentComponent, int index) {
         if (runicSpell != null) {
-            if (!runicSystemComponent.isCasting()) {
-                runicSystemComponent.resetTick();
-                runicSystemComponent.setCasting(runicSpell.shouldCast(ref.getStore(), ref));
+            if (!runicCastingManagmentComponent.isCasting()) {
+                runicCastingManagmentComponent.resetTick();
+                boolean d = runicSpell.shouldStartTicking(ref.getStore(), ref);
+                runicCastingManagmentComponent.setCasting(d);
             }
 
-            if (runicSystemComponent.isCasting()) {
-                runicSystemComponent.setCurrentSpellCasting(index);
-                runicSystemComponent.tick(delta);
-                runicSpell.tick(ref, runicSystemComponent.getTick());
+            if (runicCastingManagmentComponent.isCasting()) {
+                runicCastingManagmentComponent.setCurrentSpellCasting(index);
+                runicCastingManagmentComponent.tick(delta);
+
+                runicSpell.tick(ref, runicCastingManagmentComponent.getTick());
                 if (runicSpell.hasCasted()) {
-                    runicSystemComponent.setCurrentSpellCasting(-1);
-                    runicSystemComponent.setCasting(false);
+                    runicCastingManagmentComponent.setCurrentSpellCasting(-1);
+                    runicCastingManagmentComponent.setCasting(false);
                 }
             }
         }

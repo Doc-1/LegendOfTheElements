@@ -7,6 +7,6 @@ public class AllRuneSpells implements AllRegistries {
 
     public static void register() {
         //AllRegistries.getRuneSpellRegistry().registerRuneSpell(new UpdraftRuneSpell());
-        AllRegistries.getCodecRegistry(RunicSpell.CODEC).register("", UpdraftRunicSpell.class, UpdraftRunicSpell.CODEC);
+        AllRegistries.getCodecRegistry(RunicSpell.CODEC).register("Updraft", UpdraftRunicSpell.class, UpdraftRunicSpell.CODEC);
     }
 }

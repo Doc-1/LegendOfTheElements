@@ -12,7 +12,7 @@ import dev.docvin.legendofelements.entity.entities.components.PhysicsBlockCompon
 import dev.docvin.legendofelements.items.ItemKeyComponent;
 import dev.docvin.legendofelements.rune.components.KnownRuneSpellsComponent;
 import dev.docvin.legendofelements.rune.components.RuneManaRegenComponent;
-import dev.docvin.legendofelements.rune.components.RunicSystemComponent;
+import dev.docvin.legendofelements.rune.components.RunicCastingManagmentComponent;
 
 public class AllComponents implements AllRegistries {
 
@@ -20,8 +20,8 @@ public class AllComponents implements AllRegistries {
         ComponentType<EntityStore, RuneManaRegenComponent> magicRegenComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RuneManaRegenComponent.class, "Elemental_Magic_Regen", RuneManaRegenComponent.CODEC);
         RuneManaRegenComponent.setComponentType(magicRegenComponentType);
 
-        ComponentType<EntityStore, RunicSystemComponent> magicComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RunicSystemComponent.class, "Elemental_Magic", RunicSystemComponent.CODEC);
-        RunicSystemComponent.setComponentType(magicComponentType);
+        ComponentType<EntityStore, RunicCastingManagmentComponent> magicComponentType = AllRegistries.getEntityStoreRegistry().registerComponent(RunicCastingManagmentComponent.class, "Elemental_Magic", RunicCastingManagmentComponent.CODEC);
+        RunicCastingManagmentComponent.setComponentType(magicComponentType);
 
         AllRegistries.registerComponent(KnownRuneSpellsComponent::new);
 

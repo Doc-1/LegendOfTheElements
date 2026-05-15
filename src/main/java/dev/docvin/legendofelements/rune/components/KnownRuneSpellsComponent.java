@@ -27,7 +27,7 @@ public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsCompon
             .build();
     private static ComponentType<EntityStore, KnownRuneSpellsComponent> componentType;
     private String[] knownSpells;
-    private RunicSpell[] spells;
+    private RunicSpell.Data[] spells;
 
     public static ComponentType<EntityStore, KnownRuneSpellsComponent> getComponentType() {
         return componentType;
@@ -44,11 +44,11 @@ public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsCompon
         return "";
     }
 
-    public void learnRunicSpell(RunicSpell spell) {
-        List<RunicSpell> list = spells == null ? new ArrayList<>() : new ArrayList<>(List.of(spells));
+    public void learnRunicSpell(RunicSpell.Data spell) {
+        List<RunicSpell.Data> list = spells == null ? new ArrayList<>() : new ArrayList<>(List.of(spells));
         if (!knowsRuneSpell(spell)) {
             list.add(spell);
-            spells = list.toArray(RunicSpell[]::new);
+            spells = list.toArray(RunicSpell.Data[]::new);
         }
     }
 
@@ -61,15 +61,15 @@ public class KnownRuneSpellsComponent implements Component<KnownRuneSpellsCompon
 //            throw new AlreadyKnowsRuneSpellException(spell);
 //    }
 
-    public boolean knowsRuneSpell(RunicSpell spell) {
+    public boolean knowsRuneSpell(RunicSpell.Data spell) {
         if (knownSpells == null)
             return false;
-        for (RunicSpell runicSpell : spells)
+        for (RunicSpell.Data runicSpell : spells)
             return runicSpell.getSpellName().equals(spell.getSpellName());
         return false;
     }
 
-    public RunicSpell[] getKnownSpells() {
+    public RunicSpell.Data[] getKnownSpells() {
         return spells;
     }
 

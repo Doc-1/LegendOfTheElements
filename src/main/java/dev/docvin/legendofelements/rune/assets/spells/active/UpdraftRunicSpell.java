@@ -13,12 +13,8 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.docvin.legendofelements.rune.assets.RunicSpell;
 
 public class UpdraftRunicSpell extends RunicSpell {
-    public static final BuilderCodec<UpdraftRunicSpell> CODEC = BuilderCodec.builder(UpdraftRunicSpell.class, UpdraftRunicSpell::new, RunicSpell.SPELL_CODEC)
+    public static final BuilderCodec<UpdraftRunicSpell> CODEC = BuilderCodec.builder(UpdraftRunicSpell.class, UpdraftRunicSpell::new, SPELL_CODEC)
             .build();
-
-    public UpdraftRunicSpell() {
-        super("Updraft");
-    }
 
     @Override
     public boolean castSpell(Ref<EntityStore> ref) {
@@ -44,7 +40,7 @@ public class UpdraftRunicSpell extends RunicSpell {
     }
 
     @Override
-    public boolean shouldCast(Store<EntityStore> store, Ref<EntityStore> ref) {
+    public boolean shouldStartTicking(Store<EntityStore> store, Ref<EntityStore> ref) {
         MovementStatesComponent movementStatesComponent = store.getComponent(ref, MovementStatesComponent.getComponentType());
         assert movementStatesComponent != null;
         MovementStates states = movementStatesComponent.getMovementStates();

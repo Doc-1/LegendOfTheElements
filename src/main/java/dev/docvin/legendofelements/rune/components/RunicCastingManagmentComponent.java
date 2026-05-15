@@ -6,16 +6,16 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.docvin.legendofelements.rune.systems.RunicSpellCastingSystem;
 
 import javax.annotation.Nullable;
 
 /**
- * A simple component for player entities to keep track of mana or magical energy needed to cast
- * runic spells.
+ * This component contains the information needed to manage the {@link RunicSpellCastingSystem}.
  */
-public class RunicSystemComponent implements Component<EntityStore> {
+public class RunicCastingManagmentComponent implements Component<EntityStore> {
 
-    public static final BuilderCodec<RunicSystemComponent> CODEC = BuilderCodec.builder(RunicSystemComponent.class, RunicSystemComponent::new)
+    public static final BuilderCodec<RunicCastingManagmentComponent> CODEC = BuilderCodec.builder(RunicCastingManagmentComponent.class, RunicCastingManagmentComponent::new)
             .append(new KeyedCodec<>("MaxMagic", Codec.INTEGER), (c, v) -> c.maxMagic = v, c -> c.maxMagic)
             .add()
             .append(new KeyedCodec<>("CurrentMagic", Codec.INTEGER), (c, v) -> c.currentMagic = v, c -> c.currentMagic)
@@ -25,27 +25,27 @@ public class RunicSystemComponent implements Component<EntityStore> {
             .build();
 
 
-    private static ComponentType<EntityStore, RunicSystemComponent> type;
+    private static ComponentType<EntityStore, RunicCastingManagmentComponent> type;
     private int maxMagic;
     private int currentMagic;
     private boolean casting = false;
     private float tick;
     private int currentSpellCasting = -1;
 
-    public RunicSystemComponent() {
+    public RunicCastingManagmentComponent() {
         this(100, 0);
     }
 
-    public RunicSystemComponent(int maxMagic, int currentMagic) {
+    public RunicCastingManagmentComponent(int maxMagic, int currentMagic) {
         this.currentMagic = currentMagic;
         this.maxMagic = maxMagic;
     }
 
-    public static ComponentType<EntityStore, RunicSystemComponent> getComponentType() {
+    public static ComponentType<EntityStore, RunicCastingManagmentComponent> getComponentType() {
         return type;
     }
 
-    public static void setComponentType(ComponentType<EntityStore, RunicSystemComponent> componentType) {
+    public static void setComponentType(ComponentType<EntityStore, RunicCastingManagmentComponent> componentType) {
         type = componentType;
     }
 
@@ -100,6 +100,6 @@ public class RunicSystemComponent implements Component<EntityStore> {
     @Nullable
     @Override
     public Component<EntityStore> clone() {
-        return new RunicSystemComponent();
+        return new RunicCastingManagmentComponent();
     }
 }

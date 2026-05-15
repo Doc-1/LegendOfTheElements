@@ -84,8 +84,6 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
                 .setKeyFunction(RunicSpell::getId)
                 .setReplaceOnRemove(RunicSpell::new)
                 .build());
-        AllRuneSpells.register();
-
         AllEvents.register();
 
         AllComponents.register();
@@ -96,11 +94,13 @@ public class LegendOfTheElementsPlugin extends JavaPlugin {
 
         List<ModelAsset> modelAssetList = getModelAssets();
         ModelAsset.getAssetStore().loadAssets(LegendOfTheElementsPlugin.get().getName(), modelAssetList);
+        AllRuneSpells.register();
 
     }
 
     @Override
     protected void start() {
+
     }
 
     @Override
